@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "龍啓",
   "description": "",
-  "main": "lib/index.js",
+  "main": "index.ts",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {

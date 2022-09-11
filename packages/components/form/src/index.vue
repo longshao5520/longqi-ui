@@ -59,6 +59,34 @@
                              :value="dic.value"></el-option>
                 </el-select>
               </template>
+              <template v-if="item.type === 'checkbox'">
+                <el-checkbox-group v-model="form[item.prop]" :disabled="item.disabled" :border="item.border">
+                  <template v-if="item.button">
+                    <el-checkbox-button v-for="dic in item.dicData" :key="dic.value" :label="dic.value">
+                      {{ dic.label }}
+                    </el-checkbox-button>
+                  </template>
+                  <template v-if="!item.button">
+                    <el-checkbox v-for="dic in item.dicData" :key="dic.value" :label="dic.value">
+                      {{ dic.label }}
+                    </el-checkbox>
+                  </template>
+                </el-checkbox-group>
+              </template>
+              <template v-if="item.type === 'radio'">
+                <el-radio-group v-model="form[item.prop]" :disabled="item.disabled" :border="item.border">
+                  <template v-if="item.button">
+                    <el-radio-button v-for="dic in item.dicData" :key="dic.value" :label="dic.value">
+                      {{ dic.label }}
+                    </el-radio-button>
+                  </template>
+                  <template v-if="!item.button">
+                    <el-radio v-for="dic in item.dicData" :key="dic.value" :label="dic.value">
+                      {{ dic.label }}
+                    </el-radio>
+                  </template>
+                </el-radio-group>
+              </template>
             </el-form-item>
           </el-col>
         </template>
@@ -68,7 +96,21 @@
 </template>
 <script lang="ts" setup>
 import 'element-plus/dist/index.css'
-import {ElCol, ElForm, ElFormItem, ElInput, ElOption, ElRow, ElSelect} from 'element-plus'
+import {
+  ElCheckbox,
+  ElCheckboxButton,
+  ElCheckboxGroup,
+  ElCol,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElOption,
+  ElRadio,
+  ElRadioButton,
+  ElRadioGroup,
+  ElRow,
+  ElSelect
+} from 'element-plus'
 import {PropType, reactive, watchEffect} from "vue";
 import {LqFormOptions} from "./types";
 

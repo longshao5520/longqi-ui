@@ -6,10 +6,8 @@
 
 <script lang="ts" setup>
 import {reactive} from "vue";
-import LqForm from 'longqi-ui/src/form/src/index.vue'
-import {LqFormOptions} from "longqi-ui/src/form/src/types";
-// import {LqFormOptions} from "longqi-ui/lib/src/form/src/types";
-console.log(LqForm)
+import {LqFormOptions} from "longqi-ui/form/src/types";
+
 const options = reactive({
   // labelWidth: '100px',
   column: [
@@ -41,6 +39,36 @@ const options = reactive({
           value: '乒乓球',
         }
       ]
+    }, {
+      label: '兴趣',
+      prop: 'checkbox',
+      type: 'checkbox',
+      span: 8,
+      dicData: [{
+        label: '篮球',
+        value: '篮球',
+      }, {
+        label: '足球',
+        value: '足球',
+      }, {
+        label: '乒乓球',
+        value: '乒乓球',
+      }]
+    }, {
+      label: '性别',
+      prop: 'radio',
+      type: 'radio',
+      span: 8,
+      dicData: [{
+        label: '男',
+        value: 0
+      }, {
+        label: '女',
+        value: 1
+      }, {
+        label: '未知',
+        value: ''
+      }]
     }
   ]
 } as LqFormOptions)

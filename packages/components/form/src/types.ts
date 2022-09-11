@@ -1,7 +1,7 @@
 interface OptionsColumn {
     // public
     prop: string
-    type?: 'text' | 'textarea' | 'password' | 'select' | undefined
+    type?: undefined | 'text' | 'textarea' | 'password' | 'select' | 'checkbox' | 'radio'
     span?: number
     offset?: number
     label?: string
@@ -42,6 +42,9 @@ interface OptionsColumn {
     remoteMethod?: () => {}
     defaultFirstOption?:boolean
     loadingText?: string
+
+    border?: boolean
+    button?: boolean
 }
 
 export interface LqFormOptions {
