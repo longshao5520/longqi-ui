@@ -1,6 +1,7 @@
-interface OptionsColumn {
+export interface OptionsColumn {
     // public
     prop: string
+    value?: any
     type?: undefined | 'text' | 'textarea' | 'password' | 'select' | 'checkbox' | 'radio'
     span?: number
     offset?: number
@@ -10,7 +11,7 @@ interface OptionsColumn {
     size?: 'large' | 'default' | 'small'
     rules?: object
 
-    visible?: true
+    display?: true
     disabled?: boolean
     readonly?: boolean
     clearable?: boolean
@@ -18,7 +19,7 @@ interface OptionsColumn {
     placeholder?: string
     dicData?: {
         label: string
-        value: string
+        value: string | number
     }[]
 
     // type text | password | textarea
@@ -40,7 +41,7 @@ interface OptionsColumn {
     filterMethod?: () => {}
     remote?: boolean
     remoteMethod?: () => {}
-    defaultFirstOption?:boolean
+    defaultFirstOption?: boolean
     loadingText?: string
 
     border?: boolean
@@ -48,10 +49,31 @@ interface OptionsColumn {
 }
 
 export interface LqFormOptions {
+    width?: string
     size?: 'large' | 'default' | 'small'
     gutter?: number
     labelWidth?: string
     labelPosition?: 'left' | 'right' | 'top'
     rules?: object
     column: Array<OptionsColumn>
+}
+
+import {reactive} from 'vue'
+
+export const defineOptions = (options: LqFormOptions) => {
+    options = reactive(options);
+    options.size = options.size ? options.size : "default";
+    options.labelWidth = options.labelWidth ? options.labelWidth : "80px";
+    options.labelPosition = options.labelPosition ? options.labelPosition : "right";
+    options.column.map(item => {
+        // item.display = item.display || true;
+        item.clearable = item.clearable || true;
+        if (["text", "textarea", "password", undefined].includes(item.type)) {
+            item.placeholder = item.placeholder || "请输入 " + item.label;
+        } else if (item.type === "select") {
+            item.placeholder = item.placeholder || "请选择 " + item.label;
+        }
+    });
+
+    return options;
 }

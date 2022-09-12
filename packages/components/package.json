@@ -4,7 +4,6 @@
   "author": "龍啓",
   "description": "",
   "main": "index.ts",
-  "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "vite build"

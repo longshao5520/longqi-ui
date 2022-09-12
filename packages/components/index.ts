@@ -1,17 +1,10 @@
-import { App } from "vue";
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
-// import zhLocale from "element-plus/dist/locale";
+import {App} from "vue";
+// import zhLocale from "element-plus/dist/locale/lang/zh";
 // import enLocale from "element-plus/lib/locale/lang/en";
+import ElementPlus, {ElLoading, ElMessage, ElMessageBox, ElNotification} from "element-plus";
+import "element-plus/dist/index.css";
 
-import {
-    ElMessage,
-    ElLoading,
-    ElMessageBox,
-    ElNotification
-} from "element-plus";
-
-import LqForm from "./form";
+import LqForm from "./src/form";
 
 const components = [LqForm];
 
@@ -34,11 +27,13 @@ const install = (app: App, a: LocaleType) => {
     app.use(ElementPlus);
 };
 
-export { ElMessage, ElLoading, ElMessageBox, ElNotification };
+export {ElMessage, ElLoading, ElMessageBox, ElNotification};
 
-export { install, LqForm };
+export {install, LqForm};
 
-export default { install, LqForm };
+const LongQiUi = {install, LqForm}
+
+export default LongQiUi;
 
 // import * as components from './src/index'
 // export * from './src/index'
