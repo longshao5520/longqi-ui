@@ -1,14 +1,31 @@
+type elSize = 'large' | 'default' | 'small'
+type elFormLabelPosition = 'left' | 'right' | 'top'
+
+type ColumnType =
+    undefined
+    | 'text'
+    | 'textarea'
+    | 'password'
+    | 'select'
+    | 'checkbox'
+    | 'radio'
+    | 'time'
+    | 'timeSelect'
+    | 'slider'
+    | 'rate'
+
 export interface OptionsColumn {
     // public
     prop: string
+    component?: string
     value?: any
-    type?: undefined | 'text' | 'textarea' | 'password' | 'select' | 'checkbox' | 'radio'
+    type?: ColumnType
     span?: number
     offset?: number
     label?: string
     labelWidth?: string
-    labelPosition?: 'left' | 'right' | 'top'
-    size?: 'large' | 'default' | 'small'
+    labelPosition?: elFormLabelPosition
+    size?: elSize
     rules?: object
 
     display?: true
@@ -49,11 +66,10 @@ export interface OptionsColumn {
 }
 
 export interface LqFormOptions {
-    width?: string
-    size?: 'large' | 'default' | 'small'
+    size?: elSize
     gutter?: number
     labelWidth?: string
-    labelPosition?: 'left' | 'right' | 'top'
+    labelPosition?: elFormLabelPosition
     rules?: object
     column: Array<OptionsColumn>
 }

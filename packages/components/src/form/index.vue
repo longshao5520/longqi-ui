@@ -6,7 +6,6 @@
         :label-position="options.labelPosition"
         :size="options.size"
         :rules="options.rules"
-        :style="{width: options.width}"
     >
       <el-row>
         <template v-for="(item, index) in options.column" :key="index">
@@ -18,14 +17,23 @@
                 :size="item.size"
                 :rules="item.rules"
             >
-              <!--             style="width: 100%;"-->
-              <component :is="getNodeType(item)" v-bind="{...item}" v-model="form[item.prop]">
-                <template v-for="(subItem, subIndex) in item.dicData" :key="subIndex">
-                  <component :is="getChildNodeType(item)"
-                             v-bind="{...item,...subItem, label: item.type === 'radio' ? subItem.value : subItem.label}"
-                             @input="$forceUpdate()"
+              <el-date-picker
+                  v-if="isDate(item.type)"
+                  v-model="form[item.prop]"
+                  v-bind="{...filterAttributes(item)}"
+              />
+              <component
+                  v-if="!isDate(item.type)"
+                  :is="getComponent(item)"
+                  v-bind="{...filterAttributes(item)}"
+                  v-model="form[item.prop]"
+              >
+                <template v-if="['radio', 'checkbox', 'select'].includes(item.type)">
+                  <component
+                      v-for="(subItem, subIndex) in item.dicData" :key="subIndex"
+                      :is="getMultipleOptionsComponent(item)"
+                      v-bind="{...item,...subItem, label: item.type === 'radio' ? subItem.value : subItem.label}"
                   >
-                    <!--                             @clear="form[item.prop] = null"-->
                     {{ subItem.label }}
                   </component>
                 </template>
@@ -34,17 +42,15 @@
           </el-col>
         </template>
       </el-row>
+
     </el-form>
   </div>
 </template>
 <script lang="ts" setup>
-import {PropType, reactive, watch, watchEffect} from "vue";
+import {PropType, reactive, watch} from "vue";
 import {LqFormOptions, OptionsColumn} from "./types";
 import {cloneDeep, isNil} from "lodash";
-
-// defineOptions({
-//   name: 'LqForm',
-// });
+import {useForm} from "./useForm";
 
 const props = defineProps({
   options: {
@@ -53,8 +59,10 @@ const props = defineProps({
   }
 })
 
-let options = reactive(props.options as LqFormOptions)
+const {options, isDate, getComponent, getMultipleOptionsComponent, filterAttributes} = useForm()
+
 let form = reactive({})
+
 
 const formInitVal = (list: Array<OptionsColumn>) => {
   let tableForm = {} as any;
@@ -91,45 +99,6 @@ watch(() => props.options, (options) => {
   console.log(form)
 }, {deep: true, immediate: true})
 
-watchEffect(() => {
-  options = props.options as LqFormOptions
-  options.size = options.size || "default";
-  options.size = options.size || "default";
-  options.labelWidth = options.labelWidth || "80px";
-  options.labelPosition = options.labelPosition || "right";
-  options.column.map(item => {
-    item.clearable = item.clearable || true;
-    item.display = item.display || true;
-    if (["text", "textarea", "password", undefined].includes(item.type)) {
-      item.placeholder = item.placeholder || "请输入 " + item.label;
-    } else if (item.type === "select") {
-      item.placeholder = item.placeholder || "请选择 " + item.label;
-    }
-  });
-})
-
-
-const getNodeType = (item: OptionsColumn) => {
-  if (["text", "textarea", "password", undefined].includes(item.type)) {
-    return "el-input";
-  } else if (item.type === "checkbox" || item.type === "radio") {
-    return `el-${item.type}-group`;
-  } else if (item.type?.includes("date")) {
-    return `el-date-picker`;
-  } else {
-    return `el-${item.type}`;
-  }
-};
-
-const getChildNodeType = (item: OptionsColumn) => {
-  if (item.type === "select") {
-    return "el-option";
-  } else if ((item.type === "checkbox" || item.type === "radio") && item.button) {
-    return `el-${item.type}-button`;
-  } else {
-    return `el-${item.type}`;
-  }
-};
 
 </script>
 <style lang="scss" scoped></style>
