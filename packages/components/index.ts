@@ -1,30 +1,35 @@
 import {App} from "vue";
-// import zhLocale from "element-plus/dist/locale/lang/zh";
-// import enLocale from "element-plus/lib/locale/lang/en";
+import zhLocale from "element-plus/lib/locale/lang/zh-cn";
+import enLocale from "element-plus/lib/locale/lang/en";
 import ElementPlus, {ElLoading, ElMessage, ElMessageBox, ElNotification} from "element-plus";
 import "element-plus/dist/index.css";
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import LqForm from "./src/form";
+import {isNil} from "lodash";
 
 const components = [LqForm];
 
 interface LocaleType {
     locale: "zh" | "en";
+    size: string;
+    zIndex: number
 }
 
 const install = (app: App, a: LocaleType) => {
-    // let locale = {};
-    // if (a.locale == "zh") {
-    //     locale = { locale: zhLocale };
-    // } else if (a.locale == "en") {
-    //     locale = { locale: enLocale };
-    // } else {
-    //     locale = {};
-    // }
+    let option = {locale: zhLocale};
+    if (!isNil(a)) {
+        if (a.locale == "zh") {
+            option = {locale: zhLocale};
+        } else if (a.locale == "en") {
+            option = {locale: enLocale};
+        }
+    }
+    option = Object.assign(option, a)
     components.forEach((component: any) => {
         app.use(component.install);
     });
-    app.use(ElementPlus);
+    app.use(ElementPlus, option);
 };
 
 export {ElMessage, ElLoading, ElMessageBox, ElNotification};
