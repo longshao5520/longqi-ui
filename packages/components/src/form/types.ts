@@ -1,3 +1,5 @@
+import {Component} from "vue";
+
 type elSize = 'large' | 'default' | 'small'
 type elFormLabelPosition = 'left' | 'right' | 'top'
 
@@ -9,10 +11,29 @@ type ColumnType =
     | 'select'
     | 'checkbox'
     | 'radio'
+    | 'switch'
+    | 'year'
+    | 'month'
+    | 'date'
+    | 'dates'
+    | 'datetime'
+    | 'week'
+    | 'datetimerange'
+    | 'daterange'
+    | 'monthrange'
     | 'time'
     | 'timeSelect'
     | 'slider'
     | 'rate'
+    | 'transfer'
+    | 'upload'
+
+interface DicData {
+    label: string
+    value?: string | number
+    key?: string | number
+    disabled?: boolean
+}
 
 export interface OptionsColumn {
     // public
@@ -25,6 +46,7 @@ export interface OptionsColumn {
     label?: string
     labelWidth?: string
     labelPosition?: elFormLabelPosition
+    labelSuffix?: string
     size?: elSize
     rules?: object
 
@@ -34,10 +56,9 @@ export interface OptionsColumn {
     clearable?: boolean
 
     placeholder?: string
-    dicData?: {
-        label: string
-        value: string | number
-    }[]
+    props?: object
+    data?: Array<DicData>
+    dicData?: Array<DicData>
 
     // type text | password | textarea
     maxlength?: number
@@ -63,33 +84,25 @@ export interface OptionsColumn {
 
     border?: boolean
     button?: boolean
+
+    action?: string
+    headers?: object
+    method?: string
+    name?: string
+    showFileList?: boolean
 }
 
 export interface LqFormOptions {
+    column: Array<OptionsColumn>
     size?: elSize
     gutter?: number
     labelWidth?: string
     labelPosition?: elFormLabelPosition
-    rules?: object
-    column: Array<OptionsColumn>
-}
-
-import {reactive} from 'vue'
-
-export const defineOptions = (options: LqFormOptions) => {
-    options = reactive(options);
-    options.size = options.size ? options.size : "default";
-    options.labelWidth = options.labelWidth ? options.labelWidth : "80px";
-    options.labelPosition = options.labelPosition ? options.labelPosition : "right";
-    options.column.map(item => {
-        // item.display = item.display || true;
-        item.clearable = item.clearable || true;
-        if (["text", "textarea", "password", undefined].includes(item.type)) {
-            item.placeholder = item.placeholder || "请输入 " + item.label;
-        } else if (item.type === "select") {
-            item.placeholder = item.placeholder || "请选择 " + item.label;
-        }
-    });
-
-    return options;
+    labelSuffix?: string
+    submitBtn?: boolean
+    submitText?: string
+    submitIcon?: Component
+    emptyBtn?: boolean
+    emptyText?: string
+    emptyIcon?: Component
 }

@@ -10,15 +10,35 @@ const selectAttribute = publicAttribute.concat(['multiple', 'valueKey', 'collaps
 const dateAttribute = publicAttribute.concat(['type', 'editable', 'rangeSeparator', 'startPlaceholder', 'endPlaceholder', 'format'])
 
 export const useForm = () => {
-    let options = useProp<LqFormOptions>('options').value as LqFormOptions
+    let options = useProp<LqFormOptions>('option').value as LqFormOptions
 
     options.size = options.size || "default";
     options.size = options.size || "default";
     options.labelWidth = options.labelWidth || "80px";
     options.labelPosition = options.labelPosition || "right";
+    options.labelSuffix = options.labelSuffix || ":";
+    options.submitBtn = options.submitBtn || true
+    options.submitText = options.submitText || "提交"
+    options.emptyBtn = options.emptyBtn || true
+    options.emptyText = options.emptyText || "清空"
     options.column.map(item => {
         item.clearable = item.clearable || true;
         item.display = item.display || true;
+        if (item.type === 'transfer') {
+            // item.data = []
+            // item.dicData?.map((dic, index) => {
+            //     item.data?.push({
+            //         key: index,
+            //         label: dic.label,
+            //         disabled: false
+            //     })
+            // })
+            item.data = item.dicData
+            item.props = {
+                key: "value",
+                label: "label"
+            }
+        }
     });
 
     const isDate = (type: string) => DATE_LIST.includes(type)
@@ -42,7 +62,7 @@ export const useForm = () => {
                 result.placeholder = "请选择 " + pattern.label;
             }
         } else {
-            result = pickBy(pattern, (value, key) => !['display', 'label', 'prop'].includes(key))
+            result = pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
         }
         return cloneDeep(result)
     }
@@ -53,8 +73,6 @@ export const useForm = () => {
             return item.component
         } else if (INPUT_LIST.includes(item.type)) {
             return "el-input";
-        } else if (DATE_LIST.includes(item.type as string)) {
-            return `el-date-picker`;
         } else if (item.type === "checkbox" || item.type === "radio") {
             return `el-${item.type}-group`;
         } else if (item.type === 'time') {

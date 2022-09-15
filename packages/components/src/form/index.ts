@@ -1,6 +1,4 @@
 import Form from './index.vue'
-// import LqForm from './index.vue'
-// LqForm.install = () => {}
 import type {Plugin} from 'vue'
 
 export type SFCWithInstall<T> = T & Plugin
@@ -13,5 +11,3 @@ const withInstall = <T>(main: T,) => {
 }
 export const LqForm = withInstall(Form)
 export default LqForm
-
-// export * from './src/index.vue'

@@ -5,44 +5,70 @@
         :label-width="options.labelWidth"
         :label-position="options.labelPosition"
         :size="options.size"
-        :rules="options.rules"
     >
       <el-row>
         <template v-for="(item, index) in options.column" :key="index">
           <el-col v-if="item.display" :span="item.span || 24">
             <el-form-item
-                :label="item.label"
+                :label="item.label + (item.labelSuffix || options.labelSuffix)"
                 :label-width="item.labelWidth"
                 :label-position="item.labelPosition"
                 :size="item.size"
                 :rules="item.rules"
             >
-              <el-date-picker
-                  v-if="isDate(item.type)"
-                  v-model="form[item.prop]"
-                  v-bind="{...filterAttributes(item)}"
-              />
-              <component
-                  v-if="!isDate(item.type)"
-                  :is="getComponent(item)"
-                  v-bind="{...filterAttributes(item)}"
-                  v-model="form[item.prop]"
-              >
-                <template v-if="['radio', 'checkbox', 'select'].includes(item.type)">
-                  <component
-                      v-for="(subItem, subIndex) in item.dicData" :key="subIndex"
-                      :is="getMultipleOptionsComponent(item)"
-                      v-bind="{...item,...subItem, label: item.type === 'radio' ? subItem.value : subItem.label}"
+              <template #default>
+                <slot :name="item.prop">
+                  <el-date-picker
+                      v-if="isDate(item.type)"
+                      v-model="form[item.prop]"
+                      v-bind="{...filterAttributes(item)}"
+                  />
+                  <el-transfer
+                      v-else-if="item.type === 'transfer'"
+                      v-model="form[item.prop]"
+                      v-bind="{...filterAttributes(item)}"
+                  />
+                  <el-upload
+                      v-else-if="item.type === 'upload'"
+                      v-model="form[item.prop]"
+                      v-bind="{...filterAttributes(item)}"
                   >
-                    {{ subItem.label }}
+                    <el-button type="primary">点击上传</el-button>
+                  </el-upload>
+                  <component
+                      v-else
+                      :is="getComponent(item)"
+                      v-bind="{...filterAttributes(item)}"
+                      v-model="form[item.prop]"
+                  >
+                    <template v-if="['radio', 'checkbox', 'select'].includes(item.type)">
+                      <component
+                          v-for="(subItem, subIndex) in item.dicData" :key="subIndex"
+                          :is="getMultipleOptionsComponent(item)"
+                          v-bind="{...item,...subItem, label: item.type === 'radio' ? subItem.value : subItem.label}"
+                      >
+                        {{ subItem.label }}
+                      </component>
+                    </template>
                   </component>
-                </template>
-              </component>
+                </slot>
+              </template>
+              <template #label>
+                <slot :name="`${item.prop}Label`"></slot>
+              </template>
+              <template #error>
+                <slot :name="`${item.prop}Error`"></slot>
+              </template>
             </el-form-item>
           </el-col>
         </template>
       </el-row>
-
+      <el-row>
+        <slot name="menuForm">
+          <el-button v-if="options.submitBtn" :icon="Select" type="primary">{{ options.submitText }}</el-button>
+          <el-button v-if="options.emptyBtn" :icon="Delete">{{ options.submitText }}</el-button>
+        </slot>
+      </el-row>
     </el-form>
   </div>
 </template>
@@ -51,9 +77,14 @@ import {PropType, reactive, watch} from "vue";
 import {LqFormOptions, OptionsColumn} from "./types";
 import {cloneDeep, isNil} from "lodash";
 import {useForm} from "./useForm";
+import {Delete, Select} from '@element-plus/icons-vue'
 
 const props = defineProps({
-  options: {
+  modelValue: {
+    type: Object,
+    required: true
+  },
+  option: {
     type: Object as PropType<LqFormOptions>,
     required: true
   }
@@ -67,38 +98,25 @@ let form = reactive({})
 const formInitVal = (list: Array<OptionsColumn>) => {
   let tableForm = {} as any;
   list.map(ele => {
-    // if (
-    //     (ARRAY_VALUE_LIST.includes(ele.type) && ele.emitPath !== false) ||
-    //     (MULTIPLE_LIST.includes(ele.type) && ele.multiple) || ele.dataType === 'array'
-    // ) {
-    //   tableForm[ele.prop] = [];
-    // } else if (RANGE_LIST.includes(ele.type) && ele.range == true) {
-    //   tableForm[ele.prop] = [0, 0]
-    // } else if (
-    //     ['rate', 'slider', 'number'].includes(ele.type) ||
-    //     ele.dataType === 'number'
-    // ) {
-    //   tableForm[ele.prop] = undefined;
-    // } else {
-    //   tableForm[ele.prop] = '';
-    // }
-    // if (ele.bind) {
-    //   tableForm = createObj(tableForm, ele.bind);
-    // }
-    // 表单默认值设置
     if (!isNil(ele.value)) {
       tableForm[ele.prop] = ele.value;
-      delete ele.value
+      // } else {
+      //   tableForm[ele.prop] = null;
     }
   });
   return tableForm;
 }
 
-watch(() => props.options, (options) => {
-  form = reactive(cloneDeep(formInitVal(options.column)))
+watch(() => props.option, (option) => {
+  form = reactive(cloneDeep(formInitVal(option.column)))
   console.log(form)
 }, {deep: true, immediate: true})
 
 
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.lq-form {
+
+}
+
+</style>
