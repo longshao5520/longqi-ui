@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@element-plus/icons-vue': ^2.0.9
       '@vitejs/plugin-vue': ^3.1.0
       element-plus: ^2.2.16
       lodash: ^4.17.21
@@ -16,6 +17,7 @@ importers:
       vite-plugin-dts: ^1.4.1
       vue: ^3.2.36
     dependencies:
+      '@element-plus/icons-vue': 2.0.9_vue@3.2.36
       element-plus: 2.2.16_vue@3.2.36
     devDependencies:
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.0+vue@3.2.36
@@ -32,11 +34,13 @@ importers:
   docs:
     specifiers:
       longqi-ui: workspace:^0.0.1
-      vitepress: 1.0.0-alpha.13
+      vitepress: 1.0.0-alpha.10
+      vitepress-doc-plugin: ^1.0.3
     dependencies:
       longqi-ui: link:../packages/components
+      vitepress-doc-plugin: 1.0.3
     devDependencies:
-      vitepress: 1.0.0-alpha.13
+      vitepress: 1.0.0-alpha.10
 
   examples:
     specifiers:
@@ -49,6 +53,9 @@ importers:
       '@long-ui/utils': workspace:^0.0.1
     dependencies:
       '@long-ui/utils': link:../utils
+
+  packages/utils:
+    specifiers: {}
 
 packages:
 
@@ -202,7 +209,7 @@ packages:
     resolution: {integrity: sha512-H1PekEtSeS0msetR2YGGey2w7jQ2wAKfGODJvQTygSwMgUZ+2DHpzUgeDyEBIXRIfaBcoQneqrzsljM62pm6Xg==}
     dependencies:
       '@docsearch/react': 3.2.1
-      preact: 10.10.6
+      preact: 10.11.0
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/react'
@@ -1327,8 +1334,8 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  /preact/10.10.6:
-    resolution: {integrity: sha512-w0mCL5vICUAZrh1DuHEdOWBjxdO62lvcO++jbzr8UhhYcTbFkpegLH9XX+7MadjTl/y0feoqwQ/zAnzkc/EGog==}
+  /preact/10.11.0:
+    resolution: {integrity: sha512-Fk6+vB2kb6mSJfDgODq0YDhMfl0HNtK5+Uc9QqECO4nlyPAQwCI+BKyWO//idA7ikV7o+0Fm6LQmNuQi1wXI1w==}
     dev: true
 
   /punycode/2.1.1:
@@ -1699,8 +1706,12 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/1.0.0-alpha.13:
-    resolution: {integrity: sha512-gCbKb+6o0g5wHt2yyqBPk7FcvrB+MfwGtg1JMS5p99GTQR87l3b7symCl8o1ecv7MDXwJ2mPB8ZrYNLnQAJxLQ==}
+  /vitepress-doc-plugin/1.0.3:
+    resolution: {integrity: sha512-yM0tUMauuCn6EdykusuDi/wcVPQPUYmWCA8+Z/JMkXfdiUmkANVvowglCH9gAW+aCGSAxgT5UABAc0HUHH4gBQ==}
+    dev: false
+
+  /vitepress/1.0.0-alpha.10:
+    resolution: {integrity: sha512-RGPU+YApj2jaYplAIJUe+2qlDks9FzPX1QGK+7NdGByeCCVZg6z9eYWjjvfvA/sgCtG3yeJE/4/jCwlv4Y8bVw==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.2.1
