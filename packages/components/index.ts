@@ -5,10 +5,9 @@ import ElementPlus, {ElLoading, ElMessage, ElMessageBox, ElNotification} from "e
 import "element-plus/dist/index.css";
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
-import LqForm from "./src/form";
 import {isNil} from "lodash";
-
-const components = [LqForm];
+import {LqForm, LqUpload} from "./src";
+const components = [LqForm, LqUpload];
 
 interface LocaleType {
     locale: "zh" | "en";
@@ -26,26 +25,16 @@ const install = (app: App, a: LocaleType) => {
         }
     }
     option = Object.assign(option, a)
-    components.forEach((component: any) => {
-        app.use(component.install);
+    components.map((component: any) => {
+        app.component(component.name, component)
     });
     app.use(ElementPlus, option);
 };
 
 export {ElMessage, ElLoading, ElMessageBox, ElNotification};
 
-export {install, LqForm};
+export {install, LqForm, LqUpload};
 
-const LongQiUi = {install, LqForm}
+const LongQiUi = {install, LqForm, LqUpload}
 
 export default LongQiUi;
-
-// import * as components from './src/index'
-// export * from './src/index'
-// export default {
-//     install: (app: any) => {
-//         for (const comkey in components) {
-//             app.component((components as any)[comkey].name, (components as any)[comkey])
-//         }
-//     }
-// }
