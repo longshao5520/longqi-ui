@@ -29,11 +29,35 @@
                       v-bind="{...filterAttributes(item)}"
                   />
                   <el-upload
-                      v-else-if="item.type === 'upload'"
-                      v-model="form[item.prop]"
+                      v-else-if="item.type.includes('upload')"
+                      v-model:file-list="item.fileList"
                       v-bind="{...filterAttributes(item)}"
+                      :class="{'avatar-uploader': item.type === 'uploadImg'}"
+                      style="width: 100%"
                   >
-                    <el-button type="primary">点击上传</el-button>
+                    <template v-if="item.type === 'uploadImg'">
+                      <img v-if="form[item.prop]" :src="form[item.prop]" class="avatar" alt=""/>
+                    </template>
+                    <el-icon
+                        v-else-if="!form[item.prop] || item.type === 'uploadImgCard'"
+                        :class="{'avatar-uploader-icon': item.type === 'uploadImg'}"
+                    >
+                      <Plus/>
+                    </el-icon>
+                    <template v-else-if="item.drag">
+                      <el-icon class="el-icon--upload">
+                        <UploadFilled/>
+                      </el-icon>
+                      <div class="el-upload__text">
+                        将文件拖到此处，或<em>点击上传</em>
+                      </div>
+                    </template>
+                    <el-button v-else type="primary">点击上传</el-button>
+                    <template #tip>
+                      <div class="el-upload__tip">
+                        {{ item.tip }}
+                      </div>
+                    </template>
                   </el-upload>
                   <component
                       v-else
@@ -65,19 +89,25 @@
       </el-row>
       <el-row>
         <slot name="menuForm">
-          <el-button v-if="options.submitBtn" :icon="Select" type="primary">{{ options.submitText }}</el-button>
-          <el-button v-if="options.emptyBtn" :icon="Delete">{{ options.submitText }}</el-button>
+          <el-button v-if="options.submitBtn" :icon="options.submitIcon" type="primary">
+            {{ options.submitText }}
+          </el-button>
+          <el-button v-if="options.emptyBtn" :icon="options.emptyIcon">{{ options.emptyText }}</el-button>
         </slot>
       </el-row>
     </el-form>
   </div>
 </template>
+<script lang="ts">
+export default {
+  name: "LqForm"
+}
+</script>
 <script lang="ts" setup>
-import {PropType, reactive, watch} from "vue";
-import {LqFormOptions, OptionsColumn} from "./types";
-import {cloneDeep, isNil} from "lodash";
+import {PropType} from "vue";
+import {LqFormOptions} from "./types";
 import {useForm} from "./useForm";
-import {Delete, Select} from '@element-plus/icons-vue'
+import {Plus, CirclePlus, Delete, UploadFilled} from '@element-plus/icons-vue'
 
 const props = defineProps({
   modelValue: {
@@ -90,27 +120,7 @@ const props = defineProps({
   }
 })
 
-const {options, isDate, getComponent, getMultipleOptionsComponent, filterAttributes} = useForm()
-
-let form = reactive({})
-
-
-const formInitVal = (list: Array<OptionsColumn>) => {
-  let tableForm = {} as any;
-  list.map(ele => {
-    if (!isNil(ele.value)) {
-      tableForm[ele.prop] = ele.value;
-      // } else {
-      //   tableForm[ele.prop] = null;
-    }
-  });
-  return tableForm;
-}
-
-watch(() => props.option, (option) => {
-  form = reactive(cloneDeep(formInitVal(option.column)))
-  console.log(form)
-}, {deep: true, immediate: true})
+const {options, form, isDate, getComponent, getMultipleOptionsComponent, filterAttributes} = useForm()
 
 
 </script>

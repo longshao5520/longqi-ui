@@ -1,4 +1,5 @@
 import {Component} from "vue";
+import {UploadProps, UploadUserFile} from "element-plus";
 
 type elSize = 'large' | 'default' | 'small'
 type elFormLabelPosition = 'left' | 'right' | 'top'
@@ -27,6 +28,8 @@ type ColumnType =
     | 'rate'
     | 'transfer'
     | 'upload'
+    | 'uploadImg'
+    | 'uploadImgCard'
 
 interface DicData {
     label: string
@@ -48,6 +51,7 @@ export interface OptionsColumn {
     labelPosition?: elFormLabelPosition
     labelSuffix?: string
     size?: elSize
+    tip?: string
     rules?: object
 
     display?: true
@@ -88,8 +92,20 @@ export interface OptionsColumn {
     action?: string
     headers?: object
     method?: string
+    drag?: boolean
     name?: string
     showFileList?: boolean
+    limit?: number
+    fileList?: Array<UploadUserFile>
+    listType?: string
+    propsHttp?: {
+        url?: string,
+        name?: string,
+        res?: string,
+    }
+
+    onSuccess?: UploadProps['onSuccess']
+    onChange?: UploadProps['onChange']
 }
 
 export interface LqFormOptions {
