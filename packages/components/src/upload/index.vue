@@ -1,65 +1,59 @@
 <template>
-  <el-upload
-      v-if="option.type === 'uploadImg'"
-      v-bind="{...filterAttributes()}"
-      list-type="picture"
-      class="avatar-uploader"
-      :on-success="onSuccess"
-  >
-    <img v-if="fileList" :src="fileList[0].url" class="avatar" alt=""/>
-    <el-icon v-else class="avatar-uploader-icon">
-      <Plus/>
-    </el-icon>
-  </el-upload>
-  <el-upload
-      v-else-if="option.type === 'uploadImgCard'"
-      v-model:file-list="fileList"
-      v-bind="{...filterAttributes()}"
-      list-type="picture-card"
-      :on-success="onSuccess"
-  >
-    <el-icon>
-      <Plus/>
-    </el-icon>
-    <template #tip>
-      <div class="el-upload__tip">
-        {{ option.tip }}
-      </div>
-    </template>
-  </el-upload>
-  <el-upload
-      v-else
-      v-model:file-list="fileList"
-      v-bind="{...filterAttributes()}"
-      list-type="text"
-      :on-success="onSuccess"
-  >
-    <template v-if="option.drag">
-      <el-icon class="el-icon--upload">
-        <UploadFilled/>
-      </el-icon>
-      <div class="el-upload__text">
-        将文件拖到此处，或<em>点击上传</em>
-      </div>
-    </template>
-    <el-button v-else type="primary">点击上传</el-button>
-  </el-upload>
-  <el-button type="primary" @click="update">数据更新</el-button>
-
+  <div v-loading.lock="loading">
+    <el-upload
+        v-model:file-list="fileList"
+        v-bind="{...filterAttributes()}"
+        :list-type="listType"
+        :class="{'avatar-uploader': option.type === 'uploadImg'}"
+        :on-success="onSuccess"
+    >
+<!--        :on-change="handleFileChange"-->
+<!--        :http-request="httpUpload"-->
+      <template v-if="option.type === 'uploadImg'">
+        <img v-if="fileList" :src="fileList[0].url" class="avatar" alt=""/>
+        <el-icon v-else class="avatar-uploader-icon">
+          <Plus/>
+        </el-icon>
+      </template>
+      <template v-else-if="option.type === 'uploadImgCard'">
+        <el-icon>
+          <Plus/>
+        </el-icon>
+      </template>
+      <template v-else>
+        <template v-if="option.drag">
+          <el-icon class="el-icon--upload">
+            <UploadFilled/>
+          </el-icon>
+          <div class="el-upload__text">
+            将文件拖到此处，或<em>点击上传</em>
+          </div>
+        </template>
+        <el-button v-else type="primary">点击上传</el-button>
+      </template>
+      <template v-if="option.tip" #tip>
+        <div class="el-upload__tip">
+          {{ option.tip }}
+        </div>
+      </template>
+    </el-upload>
+<!--    <el-button type="primary" @click="updateList">数据更新</el-button>-->
+  </div>
 </template>
 
 <script lang="ts" setup>
-import {PropType, watchEffect,inject} from 'vue'
+import {PropType, watchEffect, inject, computed, ref, reactive} from 'vue'
 import {UploadUserFile, UploadProps} from "element-plus";
-import {OptionsColumn} from "../form/types";
+import {OptionsColumn, uploadCallback} from "../form/types";
 import {useUpload} from "./useUpload";
 import {Plus, UploadFilled} from '@element-plus/icons-vue'
 import {cloneDeep} from "lodash";
+import axios from "axios";
+import dayjs from "dayjs";
 
-const toggle = inject('reload');
-const emit = defineEmits(['change', 'update:fileList'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
-  fileList: {
+  modelValue: {
     type: Array as PropType<Array<UploadUserFile>>,
     default: () => []
   },
@@ -67,43 +61,50 @@ const props = defineProps({
     type: Object as PropType<OptionsColumn>,
   }
 })
-
+const loading = ref(false)
 
 let {option, fileList, filterAttributes} = useUpload()
 
-watchEffect(() => {
-  console.log(props)
-  fileList = props.fileList
+const listType = computed(() => {
+  if (option.type === 'uploadImg') {
+    return 'picture';
+  } else if (option.type === 'uploadImgCard') {
+    return 'picture-card';
+  } else {
+    return 'text'
+  }
 })
 
+let uploadRes: Record<string, any> = reactive({})
+const fileUrlKey = computed(() => {
+  return option.propsHttp?.url || 'url'
+}).value
+const fileNameKey = computed(() => {
+  return option.propsHttp?.name || 'name'
+}).value
+
 const onSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFiles) => {
-  debugger
   if (!option.onSuccess) {
+    uploadRes = response[option.propsHttp?.res as string || 'data']
     if (option.type === 'uploadImg') {
-      fileList = [{
-        url: response[option.propsHttp?.res as string || 'data'][option.propsHttp?.url as string || 'url'],
-        name: response[option.propsHttp?.res as string || 'data'][option.propsHttp?.name as string || 'name']
-      }]
-      emit('update:fileList', fileList)
+      uploadFiles[0].url = uploadRes[fileUrlKey]
+      uploadFiles.splice(uploadFiles.length - 1, 1)
     } else {
-      const value = cloneDeep(fileList)
-      value.push({
-        url: response[option.propsHttp?.res as string || 'data'][option.propsHttp?.url as string || 'url'],
-        name: response[option.propsHttp?.res as string || 'data'][option.propsHttp?.name as string || 'name']
-      })
-      emit('update:fileList', value)
+      uploadFiles[uploadFiles.length - 1].url = uploadRes[fileUrlKey]
     }
+    const list: UploadUserFile[] = reactive([])
+    uploadFiles.map(item => {
+      list.push(reactive({
+        url: item.url,
+        name: item.name,
+        status: item.status,
+        uid: item.uid
+      }))
+    })
+    emit('update:modelValue', list)
   } else {
     option.onSuccess(response, uploadFile, uploadFiles)
   }
-}
-
-const update = () => {
-  const value = cloneDeep(fileList)
-  value.push(value[0])
-  console.log(value)
-  emit('update:fileList', value)
-  // toggle()
 }
 </script>
 <style lang="scss" scoped>

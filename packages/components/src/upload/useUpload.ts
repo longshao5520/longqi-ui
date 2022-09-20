@@ -5,14 +5,14 @@ import {watchEffect} from "vue";
 
 export const useUpload = () => {
     let option = useProp<OptionsColumn>('option').value as OptionsColumn
-    let fileList = useProp<Array<UploadUserFile>>('fileList').value as Array<UploadUserFile>
+    let fileList = useProp<Array<UploadUserFile>>('modelValue').value as Array<UploadUserFile>
 
-    watchEffect(() => {
-        console.log(fileList)
-    })
+    if (option.type !== 'uploadImg') {
+        option.showFileList = true
+    }
 
     const filterAttributes = () => {
-        const keys = ['accept', 'action', 'headers', 'data', 'limit', 'showFileList', 'multiple', 'drag']
+        const keys = ['accept', 'action', 'headers', 'data', 'limit', 'showFileList', 'multiple', 'drag', 'onPreview', 'onRemove', 'onSuccess', 'onError', 'onProgress', 'onChange', 'onExceed', 'beforeUpload', 'beforeRemove']
         return cloneDeep(pickBy(option, (value, key) => keys.includes(key)))
     }
 
