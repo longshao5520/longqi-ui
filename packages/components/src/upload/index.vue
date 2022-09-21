@@ -71,7 +71,11 @@ const listType = computed(() => {
   } else if (option.type === 'uploadImgCard') {
     return 'picture-card';
   } else {
-    return 'text'
+    if (option.showThumbnail) {
+      return 'picture';
+    } else {
+      return 'text'
+    }
   }
 })
 
