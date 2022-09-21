@@ -1,5 +1,4 @@
 <template>
-  <div v-loading.lock="loading">
     <el-upload
         v-model:file-list="fileList"
         v-bind="{...filterAttributes()}"
@@ -7,8 +6,6 @@
         :class="{'avatar-uploader': option.type === 'uploadImg'}"
         :on-success="onSuccess"
     >
-<!--        :on-change="handleFileChange"-->
-<!--        :http-request="httpUpload"-->
       <template v-if="option.type === 'uploadImg'">
         <img v-if="fileList" :src="fileList[0].url" class="avatar" alt=""/>
         <el-icon v-else class="avatar-uploader-icon">
@@ -37,22 +34,17 @@
         </div>
       </template>
     </el-upload>
-<!--    <el-button type="primary" @click="updateList">数据更新</el-button>-->
-  </div>
 </template>
 
 <script lang="ts" setup>
-import {PropType, watchEffect, inject, computed, ref, reactive} from 'vue'
+import {PropType, computed, reactive} from 'vue'
 import {UploadUserFile, UploadProps} from "element-plus";
-import {OptionsColumn, uploadCallback} from "../form/types";
+import {OptionsColumn} from "../form/types";
 import {useUpload} from "./useUpload";
 import {Plus, UploadFilled} from '@element-plus/icons-vue'
-import {cloneDeep} from "lodash";
-import axios from "axios";
-import dayjs from "dayjs";
 
 const emit = defineEmits(['update:modelValue'])
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Array as PropType<Array<UploadUserFile>>,
     default: () => []
@@ -61,7 +53,6 @@ const props = defineProps({
     type: Object as PropType<OptionsColumn>,
   }
 })
-const loading = ref(false)
 
 let {option, fileList, filterAttributes} = useUpload()
 
@@ -82,9 +73,6 @@ const listType = computed(() => {
 let uploadRes: Record<string, any> = reactive({})
 const fileUrlKey = computed(() => {
   return option.propsHttp?.url || 'url'
-}).value
-const fileNameKey = computed(() => {
-  return option.propsHttp?.name || 'name'
 }).value
 
 const onSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFiles) => {
