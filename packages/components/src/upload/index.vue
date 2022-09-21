@@ -39,7 +39,7 @@
 <script lang="ts" setup>
 import {PropType, computed, reactive} from 'vue'
 import {UploadUserFile, UploadProps} from "element-plus";
-import {OptionsColumn} from "../form/types";
+import {FormColumn} from "../form/types";
 import {useUpload} from "./useUpload";
 import {Plus, UploadFilled} from '@element-plus/icons-vue'
 
@@ -50,7 +50,7 @@ defineProps({
     default: () => []
   },
   option: {
-    type: Object as PropType<OptionsColumn>,
+    type: Object as PropType<FormColumn>,
   }
 })
 

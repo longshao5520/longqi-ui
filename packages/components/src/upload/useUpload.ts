@@ -1,10 +1,9 @@
 import {useProp, UploadUserFile} from "element-plus";
-import {OptionsColumn} from "../form/types";
+import {FormColumn} from "../form/types";
 import {cloneDeep, pickBy} from "lodash";
-import {watchEffect} from "vue";
 
 export const useUpload = () => {
-    let option = useProp<OptionsColumn>('option').value as OptionsColumn
+    let option = useProp<FormColumn>('option').value as FormColumn
     let fileList = useProp<Array<UploadUserFile>>('modelValue').value as Array<UploadUserFile>
 
     if (option.type !== 'uploadImg') {
