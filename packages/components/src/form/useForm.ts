@@ -1,4 +1,4 @@
-import {LqFormOptions, OptionsColumn} from "./types";
+import {LqFormOptions, FormColumn} from "./types";
 import {useProp} from "element-plus";
 import {cloneDeep, isNil, pickBy} from "lodash";
 import {Delete, Select} from '@element-plus/icons-vue'
@@ -10,8 +10,13 @@ const publicAttribute = ['clearable', 'disabled', 'size', 'readonly', 'autofocus
 const inputAttribute = publicAttribute.concat(['type', 'maxlength', 'minlength', 'showWordLimit', 'showPassword', 'prefixIcon', 'suffixIcon', 'rows', 'autosize', 'resize'])
 const selectAttribute = publicAttribute.concat(['multiple', 'valueKey', 'collapseTags', 'collapseTagsTooltip', 'multipleLimit', 'effect', 'filterable', 'allowCreate', 'filterMethod', 'remote', 'remoteMethod', 'loading', 'loadingText', 'noMatchText', 'no-data-text', 'popper-class', 'reserveKeyword', 'defaultFirstOption', 'persistent', 'automaticDropdown', 'clearIcon', 'fitInputWidth', 'suffixIcon', 'tagType'])
 const dateAttribute = publicAttribute.concat(['type', 'editable', 'rangeSeparator', 'startPlaceholder', 'endPlaceholder', 'format'])
+const rateAttribute = publicAttribute.concat(['max', 'allowHalf', 'lowThreshold', 'highThreshold', 'colors', 'voidColor', 'disabledVoidColor', 'icons', 'voidIcon', 'disabledVoidIcon', 'showText', 'showScore', 'textColor', 'texts', 'scoreTemplate'])
+const switchAttribute = publicAttribute.concat(['loading', 'width', 'inlinePrompt', 'activeIcon', 'inactiveIcon', 'activeText', 'inactiveText', 'activeValue', 'inactiveValue', 'activeColor', 'inactiveColor', 'borderColor', 'name', 'beforeChange'])
+const numberAttribute = publicAttribute.concat(['min','max','step','stepStrictly', 'precision','controls','controlsPosition','valueOnClear'])
+const sliderAttribute = publicAttribute.concat(['min','max','step','showInput', 'showInputControls','inputSize','showStops','showTooltip', 'formatTooltip','range','vertical','height', 'rangeStartLabel','rangeEndLabel','formatValueText','debounce', 'tooltipClass', 'placement', 'marks'])
+const transferAttribute = publicAttribute.concat(['data','filterable','filterPlaceholder','filterMethod', 'targetOrder','titles','buttonTexts','renderContent', 'format','props','leftDefaultChecked','rightDefaultChecked'])
 
-export const useForm = () => {
+    export const useForm = () => {
     let options = useProp<LqFormOptions>('option').value as LqFormOptions
 
     // 配置初始化
@@ -29,71 +34,22 @@ export const useForm = () => {
     }
     Object.assign(options, defaultOption)
 
-    const propsHttp = {
-        url: "url",
-        name: "fileName",
-        res: "data",
-    }
     options.column.map(item => {
         item.clearable = item.clearable || true;
         item.display = item.display || true;
         if (item.type === 'transfer') {
             item.data = item.dicData
-            item.props = {
+            item.props = item.props || {
                 key: "value",
                 label: "label"
             }
-        }
-        if (item.type === 'uploadImg') {
-            // item.listType = 'picture-card'
-            // item.limit = 1
-        }
-        if (item.type === 'uploadImgCard') {
-            item.showFileList = true
-            item.listType = 'picture-card'
-            item.fileList = cloneDeep(form[item.prop])
-            // item.limit = 1
-            Object.assign(item.propsHttp as object, propsHttp)
-
-            item.onSuccess = (response) => {
-                if (form[item.prop] == undefined) form[item.prop] = []
-                form[item.prop].push({
-                    url: response[item.propsHttp?.res as string][item.propsHttp?.url as string],
-                    name: response[item.propsHttp?.res as string][item.propsHttp?.name as string]
-                })
-            }
-
-            // item.onChange = () => {
-            //     let loadingIndex = 0
-            //     item.fileList?.map(file => {
-            //         if (file.status === "success") {
-            //             file.url = (file.response as any)[item.propsHttp?.res as string][item.propsHttp?.url as string]
-            //             file.name = (file.response as any)[item.propsHttp?.res as string][item.propsHttp?.name as string]
-            //         } else {
-            //             loadingIndex++
-            //         }
-            //     })
-            //     if (loadingIndex === 0) {
-            //         form[item.prop] = item.fileList
-            //     }
-            // }
-            // if (typeof item.value === 'string') {
-            //     const filename = item.value.split('?')[0].substring(item.value.lastIndexOf('/') + 1, item.value.length)
-            //     item.fileList = [{
-            //         name: filename,
-            //         url: item.value
-            //     }]
-            // } else if (typeof item.value === 'object') {
-            //     item.fileList = item.value
-            // }
-            // delete item.value
         }
     });
 
     const isDate = (type: string) => DATE_LIST.includes(type)
 
     // 过滤有效属性
-    const filterAttributes = (pattern: OptionsColumn) => {
+    const filterAttributes = (pattern: FormColumn) => {
         let result
         if (INPUT_LIST.includes(pattern.type)) {
             result = pickBy(pattern, (value, key) => inputAttribute.includes(key))
@@ -105,15 +61,21 @@ export const useForm = () => {
             if (isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
             }
-        } else if ((pattern.type as string).includes('upload')) {
-            const keys = ['display', 'label', 'prop', 'value', 'type', 'data']
-            result = pickBy(pattern, (value, key) => !keys.includes(key))
         } else if (DATE_LIST.includes(pattern.type as string)) {
             result = pickBy(pattern, (value, key) => dateAttribute.includes(key))
             if (isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
             }
-
+        } else if (pattern.type == 'rate') {
+            result = pickBy(pattern, (value, key) => rateAttribute.includes(key))
+        } else if (pattern.type == 'switch') {
+            result = pickBy(pattern, (value, key) => switchAttribute.includes(key))
+        } else if (pattern.type == 'number') {
+            result = pickBy(pattern, (value, key) => numberAttribute.includes(key))
+        } else if (pattern.type == 'slider') {
+            result = pickBy(pattern, (value, key) => sliderAttribute.includes(key))
+        } else if (pattern.type == 'transfer') {
+            result = pickBy(pattern, (value, key) => transferAttribute.includes(key))
         } else {
             result = pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
         }
@@ -121,11 +83,13 @@ export const useForm = () => {
     }
 
     // 获取表单组件
-    const getComponent = (item: OptionsColumn) => {
+    const getComponent = (item: FormColumn) => {
         if (!isNil(item.component)) {
             return item.component
         } else if (INPUT_LIST.includes(item.type)) {
             return "el-input";
+        } else if (item.type === "number") {
+            return "el-input-number";
         } else if (item.type === "checkbox" || item.type === "radio") {
             return `el-${item.type}-group`;
         } else if (item.type === 'time') {
@@ -138,7 +102,7 @@ export const useForm = () => {
     };
 
     // 获取 select checkbox radio 的子级组件
-    const getMultipleOptionsComponent = (item: OptionsColumn) => {
+    const getMultipleOptionsComponent = (item: FormColumn) => {
         if (item.type === "select") {
             return "el-option";
         } else if ((item.type === "checkbox" || item.type === "radio") && item.button) {
@@ -150,11 +114,13 @@ export const useForm = () => {
 
     let modelValue = useProp<LqFormOptions>('modelValue').value as any
 
-    const formInitVal = (list: Array<OptionsColumn>) => {
+    const formInitVal = (list: Array<FormColumn>) => {
         let value = {} as any;
         list.map(ele => {
             if (!isNil(ele.value)) {
                 value[ele.prop] = ele.value;
+            } else if (ele.type?.includes('upload')) {
+                value[ele.prop] = []
             }
         });
         return value;

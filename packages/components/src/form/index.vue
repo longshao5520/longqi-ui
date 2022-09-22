@@ -28,37 +28,13 @@
                       v-model="form[item.prop]"
                       v-bind="{...filterAttributes(item)}"
                   />
-                  <el-upload
+                  <lq-upload
                       v-else-if="item.type.includes('upload')"
-                      v-model:file-list="item.fileList"
-                      v-bind="{...filterAttributes(item)}"
-                      :class="{'avatar-uploader': item.type === 'uploadImg'}"
-                      style="width: 100%"
-                  >
-                    <template v-if="item.type === 'uploadImg'">
-                      <img v-if="form[item.prop]" :src="form[item.prop]" class="avatar" alt=""/>
-                    </template>
-                    <el-icon
-                        v-else-if="!form[item.prop] || item.type === 'uploadImgCard'"
-                        :class="{'avatar-uploader-icon': item.type === 'uploadImg'}"
-                    >
-                      <Plus/>
-                    </el-icon>
-                    <template v-else-if="item.drag">
-                      <el-icon class="el-icon--upload">
-                        <UploadFilled/>
-                      </el-icon>
-                      <div class="el-upload__text">
-                        将文件拖到此处，或<em>点击上传</em>
-                      </div>
-                    </template>
-                    <el-button v-else type="primary">点击上传</el-button>
-                    <template #tip>
-                      <div class="el-upload__tip">
-                        {{ item.tip }}
-                      </div>
-                    </template>
-                  </el-upload>
+                      v-model="form[item.prop]"
+                      :option="item"
+                      style="width: 100%;"
+                  />
+
                   <component
                       v-else
                       :is="getComponent(item)"
@@ -107,9 +83,8 @@ export default {
 import {PropType} from "vue";
 import {LqFormOptions} from "./types";
 import {useForm} from "./useForm";
-import {Plus, CirclePlus, Delete, UploadFilled} from '@element-plus/icons-vue'
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Object,
     required: true

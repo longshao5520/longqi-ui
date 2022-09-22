@@ -1,9 +1,8 @@
-import {Component} from "vue";
+import {Component, reactive} from "vue";
 import {UploadProps, UploadUserFile} from "element-plus";
 
 type elSize = 'large' | 'default' | 'small'
 type elFormLabelPosition = 'left' | 'right' | 'top'
-
 type ColumnType =
     undefined
     | 'text'
@@ -12,7 +11,6 @@ type ColumnType =
     | 'select'
     | 'checkbox'
     | 'radio'
-    | 'switch'
     | 'year'
     | 'month'
     | 'date'
@@ -24,36 +22,34 @@ type ColumnType =
     | 'monthrange'
     | 'time'
     | 'timeSelect'
-    | 'slider'
-    | 'rate'
-    | 'transfer'
     | 'upload'
     | 'uploadImg'
     | 'uploadImgCard'
+    | 'rate'
+    | 'switch'
+    | 'number'
+    | 'slider'
+    | 'transfer'
 
-interface DicData {
-    label: string
-    value?: string | number
-    key?: string | number
-    disabled?: boolean
+interface FormLabel {
+    labelWidth?: string
+    labelPosition?: elFormLabelPosition
+    labelSuffix?: string
 }
 
-export interface OptionsColumn {
-    // public
+interface FormColumnPublic extends FormLabel {
     prop: string
     component?: string
+    label?: string
     value?: any
     type?: ColumnType
     span?: number
     offset?: number
-    label?: string
-    labelWidth?: string
-    labelPosition?: elFormLabelPosition
-    labelSuffix?: string
     size?: elSize
     tip?: string
     rules?: object
 
+    // 控制
     display?: true
     disabled?: boolean
     readonly?: boolean
@@ -61,9 +57,11 @@ export interface OptionsColumn {
 
     placeholder?: string
     props?: object
-    data?: Array<DicData>
-    dicData?: Array<DicData>
+    data?: Record<string, any>
+    dicData?: Array<Record<string, any>>
+}
 
+export interface FormColumn extends FormColumnPublic {
     // type text | password | textarea
     maxlength?: number
     minlength?: number
@@ -89,36 +87,35 @@ export interface OptionsColumn {
     border?: boolean
     button?: boolean
 
+    // type upload
     action?: string
     headers?: object
     method?: string
     drag?: boolean
+    showThumbnail?: boolean
     name?: string
     showFileList?: boolean
     limit?: number
     fileList?: Array<UploadUserFile>
     listType?: string
-    propsHttp?: {
-        url?: string,
-        name?: string,
-        res?: string,
-    }
-
+    propsHttp?: Record<string, any>
+    httpRequest?: UploadProps['httpRequest']
     onSuccess?: UploadProps['onSuccess']
     onChange?: UploadProps['onChange']
 }
 
-export interface LqFormOptions {
-    column: Array<OptionsColumn>
+export interface LqFormOptions extends FormLabel {
+    column: Array<FormColumn>
     size?: elSize
     gutter?: number
-    labelWidth?: string
-    labelPosition?: elFormLabelPosition
-    labelSuffix?: string
     submitBtn?: boolean
     submitText?: string
     submitIcon?: Component
     emptyBtn?: boolean
     emptyText?: string
     emptyIcon?: Component
+}
+
+export const defineLqForm = (options: LqFormOptions) => {
+    return reactive(options)
 }
