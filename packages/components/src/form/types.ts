@@ -1,4 +1,4 @@
-import {Component, reactive} from "vue";
+import {Component, reactive, VNode, VNodeProps} from "vue";
 import {UploadProps, UploadUserFile} from "element-plus";
 
 type Size = 'large' | 'default' | 'small'
@@ -61,6 +61,7 @@ interface FormColumnPublic extends FormLabel {
     dicData?: Array<Record<string, any>>
 }
 
+// upload
 interface Column extends FormColumnPublic {
     action?: string
     headers?: object
@@ -85,6 +86,7 @@ interface Column extends FormColumnPublic {
     beforeRemove?: UploadProps['beforeRemove']
 }
 
+// select
 interface Column {
     multiple?: boolean
     multipleLimit?: boolean
@@ -127,6 +129,13 @@ interface ColumnEvent {
     rightCheckChange?: (key: string | number, keys: Array<string | number>) => {}
 }
 
+interface Mark {
+    style: CSSStyleDeclaration
+    label: string
+}
+
+type Marks = Record<number, Mark | string>
+
 
 interface Column extends ColumnEvent {
     // type text | password | textarea | number
@@ -154,17 +163,101 @@ interface Column extends ColumnEvent {
     // type number
     min?: number
     max?: number
-    step?: number
+    step?: number | string
     stepStrictly?: boolean
     precision?: number
     controls?: boolean
     controlsPosition?: string
     valueOnClear?: string | number
 
-
-
+    // type radio | checkbox | rate
+    textColor?: string
+    // type radio | checkbox
+    fill?: string
     border?: boolean
     button?: boolean
+
+    // type all date and time
+    editable?: boolean
+    rangeSeparator?: string
+    startPlaceholder?: string
+    endPlaceholder?: string
+    format?: string
+    valueFormat?: string
+    disabledDate?: (dates: Date[]) => boolean
+    shortcuts?: () => Array<{ text: string, value: Date }>
+
+    // type time
+    isRange?: boolean
+    arrowControl?: boolean
+    disabledHours?: () => number[]
+    disabledMinutes?: () => number[]
+    disabledSeconds?: () => number[]
+
+    // type timeSelect
+    start?: string
+    end?: string
+    minTime?: string
+    maxTime?: string
+
+    // type rate
+    allowHalf?: boolean
+    lowThreshold?: number
+    highThreshold?: number
+    colors?: Array<string> | Record<number, string>
+    voidColor?: string
+    disabledVoidColor?: string
+    icons?: Array<Component> | Record<number, Component>
+    voidIcon?: Component
+    disabledVoidIcon?: Component
+    showText?: boolean
+    showScore?: boolean
+    texts?: Array<string>
+    scoreTemplate?: string
+
+    // type switch
+    inlinePrompt?: boolean
+    activeIcon?: Component
+    inactiveIcon?: Component
+    activeText?: string
+    inactiveText?: string
+    activeValue?: string | number | boolean
+    inactiveValue?: string | number | boolean
+    inactiveColor?: string
+    borderColor?: string
+    beforeChange?: () => Promise<boolean> | boolean
+
+    // type slider
+    showInput?: boolean
+    showInputControls?: boolean
+    inputSize?: Size
+    showStops?: boolean
+    showTooltip?: boolean
+    formatTooltip?: (value: string) => string
+    range?: boolean
+    vertical?: boolean
+    height?: string
+    rangeStartLabel?: string
+    rangeEndLabel?: string
+    formatValueText?: (value: string) => string
+    debounce?: number
+    tooltipClass?: string
+    marks?: Marks
+
+    // type transfer
+    filterPlaceholder?: string
+    targetOrder?: 'original' | 'push' | 'unshift'
+    titles?: Array<string>
+    buttonTexts?: Array<string>
+    renderContent?: (
+        h: (type: string, props: VNodeProps | null, children?: string) => VNode,
+        option: {
+            key: number
+            label: string
+            disabled: boolean
+        }) => ((type: string, props: VNodeProps | null, children?: string) => VNode)
+    leftDefaultChecked?: number[]
+    rightDefaultChecked?: number[]
 }
 
 export interface FormColumn extends Column {
