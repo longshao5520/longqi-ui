@@ -25,3 +25,4 @@ dist-ssr
 
 packages/components/es
 packages/components/lib
+/docs/.docs/
