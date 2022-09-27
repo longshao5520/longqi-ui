@@ -1,6 +1,6 @@
 import {useProp, UploadUserFile} from "element-plus";
 import {FormColumn} from "../form/types";
-import {cloneDeep, pickBy} from "lodash";
+import lodash from "lodash";
 
 export const useUpload = () => {
     let option = useProp<FormColumn>('option').value as FormColumn
@@ -12,7 +12,7 @@ export const useUpload = () => {
 
     const filterAttributes = () => {
         const keys = ['accept', 'action', 'headers', 'data', 'limit', 'showFileList', 'multiple', 'drag', 'onPreview', 'onRemove', 'onError', 'onProgress', 'onChange', 'onExceed', 'beforeUpload', 'beforeRemove']
-        return cloneDeep(pickBy(option, (value, key) => keys.includes(key)))
+        return lodash.cloneDeep(lodash.pickBy(option, (value, key) => keys.includes(key)))
     }
 
     return {option, fileList, filterAttributes}

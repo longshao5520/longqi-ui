@@ -29,7 +29,7 @@
                       v-bind="{...filterAttributes(item)}"
                   />
                   <lq-upload
-                      v-else-if="item.type.includes('upload')"
+                      v-else-if="isUpload(item.type)"
                       v-model="form[item.prop]"
                       :option="item"
                       style="width: 100%;"
@@ -63,12 +63,12 @@
           </el-col>
         </template>
       </el-row>
-      <el-row>
+      <el-row v-if="options.menuBtn" :justify="options.menuPosition">
+        <el-button v-if="options.submitBtn" :icon="options.submitIcon" type="primary">
+          {{ options.submitText }}
+        </el-button>
+        <el-button v-if="options.emptyBtn" :icon="options.emptyIcon">{{ options.emptyText }}</el-button>
         <slot name="menuForm">
-          <el-button v-if="options.submitBtn" :icon="options.submitIcon" type="primary">
-            {{ options.submitText }}
-          </el-button>
-          <el-button v-if="options.emptyBtn" :icon="options.emptyIcon">{{ options.emptyText }}</el-button>
         </slot>
       </el-row>
     </el-form>
@@ -95,7 +95,7 @@ defineProps({
   }
 })
 
-const {options, form, isDate, getComponent, getMultipleOptionsComponent, filterAttributes} = useForm()
+const {options, form, isDate, isUpload, getComponent, getMultipleOptionsComponent, filterAttributes} = useForm()
 
 
 </script>

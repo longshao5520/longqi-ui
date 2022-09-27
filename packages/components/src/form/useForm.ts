@@ -1,11 +1,12 @@
 import {LqFormOptions, FormColumn} from "./types";
 import {useProp} from "element-plus";
-import {cloneDeep, isNil, pickBy} from "lodash";
+import lodash from "lodash";
 import {Delete, Select} from '@element-plus/icons-vue'
 import {markRaw} from 'vue'
 
 const INPUT_LIST = ["text", "input", "textarea", "password", undefined]
 const DATE_LIST = ['year', 'month', 'date', 'dates', 'datetime', 'week', 'datetimerange', 'daterange', 'monthrange']
+const UPLOAD_LIST = ['upload', 'uploadImg', 'uploadImgCard']
 const publicAttribute = ['clearable', 'disabled', 'size', 'readonly', 'autofocus', 'validateEvent', 'rules']
 const inputAttribute = publicAttribute.concat(['type', 'maxlength', 'minlength', 'showWordLimit', 'showPassword', 'prefixIcon', 'suffixIcon', 'rows', 'autosize', 'resize'])
 const selectAttribute = publicAttribute.concat(['multiple', 'valueKey', 'collapseTags', 'collapseTagsTooltip', 'multipleLimit', 'effect', 'filterable', 'allowCreate', 'filterMethod', 'remote', 'remoteMethod', 'loading', 'loadingText', 'noMatchText', 'noDataText', 'popperClass', 'reserveKeyword', 'defaultFirstOption', 'persistent', 'automaticDropdown', 'clearIcon', 'fitInputWidth', 'suffixIcon', 'suffixTransition', 'tagType', 'placement'])
@@ -22,9 +23,11 @@ const transferAttribute = publicAttribute.concat(['data','filterable','filterPla
     // 配置初始化
     const defaultOption = {
         size: 'default',
-        labelWidth: '80px',
+        labelWidth: '100px',
         labelPosition: 'right',
         labelSuffix: ':',
+        menuBtn: true,
+        menuPosition: "center",
         submitBtn: true,
         submitText: '提交',
         submitIcon: markRaw(Select),
@@ -47,44 +50,45 @@ const transferAttribute = publicAttribute.concat(['data','filterable','filterPla
     });
 
     const isDate = (type: string) => DATE_LIST.includes(type)
+    const isUpload = (type: string) => UPLOAD_LIST.includes(type)
 
     // 过滤有效属性
     const filterAttributes = (pattern: FormColumn) => {
         let result
         if (INPUT_LIST.includes(pattern.type)) {
-            result = pickBy(pattern, (value, key) => inputAttribute.includes(key))
-            if (isNil(result.placeholder)) {
+            result = lodash.pickBy(pattern, (value, key) => inputAttribute.includes(key))
+            if (lodash.isNil(result.placeholder)) {
                 result.placeholder = "请输入 " + pattern.label;
             }
         } else if (pattern.type == 'select') {
-            result = pickBy(pattern, (value, key) => selectAttribute.includes(key))
-            if (isNil(result.placeholder)) {
+            result = lodash.pickBy(pattern, (value, key) => selectAttribute.includes(key))
+            if (lodash.isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
             }
         } else if (DATE_LIST.includes(pattern.type as string)) {
-            result = pickBy(pattern, (value, key) => dateAttribute.includes(key))
-            if (isNil(result.placeholder)) {
+            result = lodash.pickBy(pattern, (value, key) => dateAttribute.includes(key))
+            if (lodash.isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
             }
         } else if (pattern.type == 'rate') {
-            result = pickBy(pattern, (value, key) => rateAttribute.includes(key))
+            result = lodash.pickBy(pattern, (value, key) => rateAttribute.includes(key))
         } else if (pattern.type == 'switch') {
-            result = pickBy(pattern, (value, key) => switchAttribute.includes(key))
+            result = lodash.pickBy(pattern, (value, key) => switchAttribute.includes(key))
         } else if (pattern.type == 'number') {
-            result = pickBy(pattern, (value, key) => numberAttribute.includes(key))
+            result = lodash.pickBy(pattern, (value, key) => numberAttribute.includes(key))
         } else if (pattern.type == 'slider') {
-            result = pickBy(pattern, (value, key) => sliderAttribute.includes(key))
+            result = lodash.pickBy(pattern, (value, key) => sliderAttribute.includes(key))
         } else if (pattern.type == 'transfer') {
-            result = pickBy(pattern, (value, key) => transferAttribute.includes(key))
+            result = lodash.pickBy(pattern, (value, key) => transferAttribute.includes(key))
         } else {
-            result = pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
+            result = lodash.pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
         }
-        return cloneDeep(result)
+        return lodash.cloneDeep(result)
     }
 
     // 获取表单组件
     const getComponent = (item: FormColumn) => {
-        if (!isNil(item.component)) {
+        if (!lodash.isNil(item.component)) {
             return item.component
         } else if (INPUT_LIST.includes(item.type)) {
             return "el-input";
@@ -117,7 +121,7 @@ const transferAttribute = publicAttribute.concat(['data','filterable','filterPla
     const formInitVal = (list: Array<FormColumn>) => {
         let value = {} as any;
         list.map(ele => {
-            if (!isNil(ele.value)) {
+            if (!lodash.isNil(ele.value)) {
                 value[ele.prop] = ele.value;
             } else if (ele.type?.includes('upload')) {
                 value[ele.prop] = []
@@ -126,7 +130,7 @@ const transferAttribute = publicAttribute.concat(['data','filterable','filterPla
         return value;
     }
 
-    let form = Object.assign(modelValue, cloneDeep(formInitVal(options.column)))
+    let form = Object.assign(modelValue, lodash.cloneDeep(formInitVal(options.column)))
 
-    return {options, form, isDate, getComponent, getMultipleOptionsComponent, filterAttributes}
+    return {options, form, isDate, isUpload, getComponent, getMultipleOptionsComponent, filterAttributes}
 }

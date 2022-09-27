@@ -5,7 +5,7 @@ type Size = 'large' | 'default' | 'small'
 type Position = 'left' | 'right' | 'top'
 type ColumnType =
     undefined
-    | 'text'
+    | 'input'
     | 'textarea'
     | 'password'
     | 'select'
@@ -268,6 +268,8 @@ export interface LqFormOptions extends FormLabel {
     size?: Size
     gutter?: number
     step?: number
+    menuBtn?: boolean
+    menuPosition?: 'start' | 'center' | 'right' | 'space-around' | 'space-between' | 'space-evenly'
     submitBtn?: boolean
     submitText?: string
     submitIcon?: Component
