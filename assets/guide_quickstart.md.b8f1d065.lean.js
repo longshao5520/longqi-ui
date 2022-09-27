@@ -1,0 +1,1 @@
+import{_ as t,o as e,c as a}from"./app.3b5271cd.js";const _=JSON.parse('{"title":"","description":"","frontmatter":{"realPath":"docs/guide/quickstart.zh-CN.md"},"headers":[],"relativePath":"guide/quickstart.md","lastUpdated":null}'),r={name:"guide/quickstart.md"};function s(c,o,d,i,n,p){return e(),a("div")}const l=t(r,[["render",s]]);export{_ as __pageData,l as default};
