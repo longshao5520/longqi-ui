@@ -3,8 +3,8 @@ export const sidebar = {
     {
       text: 'Guide',
       items: [
-        { text: '安装', link: '/guild/' },
-        { text: '快速开始', link: '/guild/quickstart' },
+        { text: '安装', link: '/guide/' },
+        { text: '快速开始', link: '/guide/quickstart' },
       ],
     },
   ],
@@ -12,8 +12,8 @@ export const sidebar = {
     {
       text: '开始',
       items: [
-        { text: '安装', link: '/guild/' },
-        { text: '快速开始', link: '/guild/quickstart' },
+        { text: '安装', link: '/guide/' },
+        { text: '快速开始', link: '/guide/quickstart' },
       ],
     },
     {

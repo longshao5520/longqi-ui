@@ -3,12 +3,11 @@ import { applyPlugins } from '@ruabick/md-demo-plugins';
 import { genTemp } from '@ruabick/vite-plugin-gen-temp';
 import { genApiDoc } from '@ruabick/vite-plugin-gen-api-doc';
 import { sidebar } from './sidebar.js';
-import { resolve } from 'path';
 
 export default defineConfig({
   lang: 'zh-CN',
   lastUpdated: true,
-  base: process.env.NODE_ENV === 'production' ? '/doc' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/longqi-ui' : '/',
   locales: {
     '/': {
       lang: 'zh-CN',
@@ -49,11 +48,6 @@ export default defineConfig({
   vue: {},
   vite: {
     plugins: [genTemp(), genApiDoc()],
-    resolve: {
-      alias: {
-        'components': resolve('./src/'),
-      },
-    },
   },
   markdown: {
     config: (md) => {
