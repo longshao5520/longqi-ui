@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "longqi-ui": "workspace:^0.0.1"
+  },
+  "devDependencies": {
+    "vue": "^3.2.39"
   }
 }
