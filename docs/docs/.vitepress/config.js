@@ -5,23 +5,27 @@ import { genApiDoc } from '@ruabick/vite-plugin-gen-api-doc';
 import { sidebar } from './sidebar.js';
 
 export default defineConfig({
+  head: [
+    ['link', { rel: 'icon', type: 'image/x-icon', href: 'https://figure-bed-5520.oss-cn-hangzhou.aliyuncs.com/favicon.ico.png' }]
+  ],
   lang: 'zh-CN',
   lastUpdated: true,
   base: process.env.NODE_ENV === 'production' ? '/longqi-ui' : '/',
   locales: {
     '/': {
       lang: 'zh-CN',
-      title: '',
+      title: 'longqi ui',
       description: '一个Vue3组件库',
     },
     '/en/': {
       lang: 'en-US',
-      title: '',
+      title: 'longqi ui',
       description: '一个Vue3组件库',
     },
   },
   themeConfig: {
     logo: '/logo.png',
+    siteTitle: "",
     localeLinks: {
       text: '',
       items: [
@@ -34,15 +38,15 @@ export default defineConfig({
         {
           text: "组件",
           items: [
-            {text: 'form', link: '/components/form/'},
-            {text: 'crud', link: '/components/crud/'},
+            {text: 'Form', link: '/components/form/'},
+            {text: 'Crud', link: '/components/crud/'},
           ]
         },
     ],
     sidebar,
     algolia: {},
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/longshao5520/doc' },
+      { icon: 'github', link: 'https://github.com/longshao5520/longqi-ui' },
     ],
   },
   vue: {},

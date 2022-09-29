@@ -3,3 +3,8 @@
 </p>
 
 <p align="center">A CRUD component library that encapsulates Element Plus twice.</p>
+
+## License
+
+Element Plus is open source software licensed as
+[MIT](https://github.com/element-plus/element-plus/blob/master/LICENSE).

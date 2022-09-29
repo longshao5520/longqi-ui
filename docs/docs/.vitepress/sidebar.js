@@ -17,11 +17,11 @@ export const sidebar = {
       ],
     },
     {
-      text: 'form',
+      text: 'Form',
       items: [
         { text: '属性文档', link: '/components/form/' },
-        { text: 'input', link: '/components/form/input/' },
-        { text: 'number', link: '/components/form/number/' },
+        { text: 'Input', link: '/components/form/input/' },
+        { text: 'Number', link: '/components/form/number/' },
       ],
     },
   ]

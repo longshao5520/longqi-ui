@@ -15,7 +15,7 @@ export default defineComponent({
         label: "输入框",
         prop: "input",
         type:'number',
-        value: "默认值"
+        value: 0
       }]
     });
 

@@ -3,15 +3,23 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:longqi": "gulp -f packages/components/script/build/gulpfile.ts",
+    "publish:longqi": "gulp -f packages/components/script/publish/gulpfile.ts",
+    "examples:dev": "pnpm run -C examples dev",
+    "docs:dev": "pnpm run -C docs dev",
+    "docs:build": "pnpm run -C docs site:build",
+    "docs:publish": "pnpm run -C docs deploy"
   },
   "keywords": [],
   "author": "龍啓",
   "license": "MIT",
   "devDependencies": {
+    "@types/gulp": "^4.0.9",
     "@vitejs/plugin-vue": "^3.1.0",
+    "gulp": "^4.0.2",
     "lodash": "^4.17.21",
     "sass": "^1.54.9",
+    "sucrase": "^3.27.0",
     "typescript": "^4.8.3",
     "unplugin-auto-import": "^0.11.2",
     "unplugin-vue-components": "^0.22.4",

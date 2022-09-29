@@ -77,3 +77,14 @@
   font-size: 15px;
   font-weight: 600;
 }
+
+
+@media (min-width: 1280px) {
+  .content {
+    min-width: 900px !important;
+  }
+}
+
+.content-container {
+  max-width: 900px !important;
+}
