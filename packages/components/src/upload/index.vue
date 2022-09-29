@@ -1,5 +1,6 @@
 <template>
     <el-upload
+        ref="uploadRef"
         v-model:file-list="fileList"
         v-bind="{...filterAttributes()}"
         :list-type="listType"
@@ -35,16 +36,20 @@
       </template>
     </el-upload>
 </template>
-
+<script lang="ts">
+export default {
+  name: "LqUpload"
+}
+</script>
 <script lang="ts" setup>
-import {PropType, computed, reactive} from 'vue'
-import {UploadUserFile, UploadProps} from "element-plus";
+import {PropType, computed, reactive, ref} from 'vue'
+import {UploadUserFile, UploadProps, UploadInstance} from "element-plus";
 import {FormColumn} from "../form/types";
 import {useUpload} from "./useUpload";
 import {Plus, UploadFilled} from '@element-plus/icons-vue'
 
 const emit = defineEmits(['update:modelValue'])
-defineProps({
+const props = defineProps({
   modelValue: {
     type: Array as PropType<Array<UploadUserFile>>,
     default: () => []
@@ -53,7 +58,6 @@ defineProps({
     type: Object as PropType<FormColumn>,
   }
 })
-
 let {option, fileList, filterAttributes} = useUpload()
 
 const listType = computed(() => {
@@ -98,6 +102,16 @@ const onSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFiles) 
     option.onSuccess(response, uploadFile, uploadFiles)
   }
 }
+
+const uploadRef = ref<UploadInstance>()
+function clearFiles() {
+  uploadRef.value!.clearFiles()
+}
+
+defineExpose({
+  clearFiles
+})
+
 </script>
 <style lang="scss" scoped>
 .avatar-uploader {
@@ -120,7 +134,6 @@ const onSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFiles) 
     border-color: var(--el-color-primary);
   }
 }
-
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -128,9 +141,5 @@ const onSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFiles) 
   height: 178px;
   text-align: center;
 }
+
 </style>
-<script lang="ts">
-export default {
-  name: 'LqUpload'
-}
-</script>
