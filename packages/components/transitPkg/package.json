@@ -1,0 +1,23 @@
+{
+  "name": "longqi-ui",
+  "version": "0.0.3",
+  "author": "龍啓",
+  "description": "A CRUD component library that encapsulates Element-Plus twice",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "keywords": [
+    "longqi-ui",
+    "element-plus",
+    "vue3.0",
+    "vue",
+    "vue3组件库"
+  ],
+  "repository": "https://github.com/longshao5520/longqi-ui",
+  "homepage": "https://longshao5520.github.io/longqi-ui"
+}
