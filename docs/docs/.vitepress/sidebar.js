@@ -23,6 +23,7 @@ export const sidebar = {
         { text: 'Input', link: '/components/form/input/' },
         { text: 'Number', link: '/components/form/number/' },
         { text: 'Checkbox', link: '/components/form/checkbox/' },
+        { text: 'Radio', link: '/components/form/radio/' },
       ],
     },
   ]
