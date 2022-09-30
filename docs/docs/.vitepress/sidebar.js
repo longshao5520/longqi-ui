@@ -22,6 +22,7 @@ export const sidebar = {
         { text: '属性文档', link: '/components/form/' },
         { text: 'Input', link: '/components/form/input/' },
         { text: 'Number', link: '/components/form/number/' },
+        { text: 'Checkbox', link: '/components/form/checkbox/' },
       ],
     },
   ]
