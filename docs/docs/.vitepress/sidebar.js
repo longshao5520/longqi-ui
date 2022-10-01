@@ -25,6 +25,7 @@ export const sidebar = {
         { text: 'Checkbox', link: '/components/form/checkbox/' },
         { text: 'Radio', link: '/components/form/radio/' },
         { text: 'Switch', link: '/components/form/switch/' },
+        { text: 'Select', link: '/components/form/select/' },
       ],
     },
   ]
