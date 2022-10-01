@@ -24,6 +24,7 @@ export const sidebar = {
         { text: 'Number', link: '/components/form/number/' },
         { text: 'Checkbox', link: '/components/form/checkbox/' },
         { text: 'Radio', link: '/components/form/radio/' },
+        { text: 'Switch', link: '/components/form/switch/' },
       ],
     },
   ]
