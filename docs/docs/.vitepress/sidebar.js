@@ -28,6 +28,7 @@ export const sidebar = {
         { text: 'Select', link: '/components/form/select/' },
         { text: 'Date', link: '/components/form/date/' },
         { text: 'Time', link: '/components/form/time/' },
+        { text: 'Time Select', link: '/components/form/timeSelect/' },
       ],
     },
   ]
