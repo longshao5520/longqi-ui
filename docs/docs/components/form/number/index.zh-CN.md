@@ -1,6 +1,6 @@
 # Number数字输入框
 
-## 基本用法
+## 基础用法
 <demo src="./basic.vue" desc="通过将 type 属性的值指定为 number"></demo>
 
 ## 默认值

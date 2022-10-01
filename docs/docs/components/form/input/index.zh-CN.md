@@ -1,6 +1,6 @@
 # Input输入框
 
-## 基本用法
+## 基础用法
 <demo src="./basic.vue" desc="当 type 为 input 时可以不写,默认为 input"></demo>
 
 ## 默认值
