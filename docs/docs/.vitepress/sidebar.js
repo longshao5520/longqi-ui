@@ -30,6 +30,7 @@ export const sidebar = {
         { text: 'Time', link: '/components/form/time/' },
         { text: 'Time Select', link: '/components/form/timeSelect/' },
         { text: 'Rate', link: '/components/form/rate/' },
+        { text: 'Slider', link: '/components/form/slider/' },
       ],
     },
   ]
