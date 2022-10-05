@@ -184,8 +184,8 @@ interface Column extends ColumnEvent {
     endPlaceholder?: string
     format?: string
     valueFormat?: string
-    disabledDate?: (dates: Date[]) => boolean
-    shortcuts?: () => Array<{ text: string, value: Date }>
+    disabledDate?: (dates: Date) => boolean
+    shortcuts?: Array<{ text: string, value: () => Date }>
 
     // type time
     isRange?: boolean
@@ -268,14 +268,15 @@ export interface LqFormOptions extends FormLabel {
     size?: Size
     gutter?: number
     step?: number
+    enter?: boolean
     menuBtn?: boolean
     menuPosition?: 'start' | 'center' | 'right' | 'space-around' | 'space-between' | 'space-evenly'
     submitBtn?: boolean
     submitText?: string
-    submitIcon?: Component
+    submitIcon?: string | Component
     emptyBtn?: boolean
     emptyText?: string
-    emptyIcon?: Component
+    emptyIcon?: string | Component
 }
 
 export const defineLqForm = (options: LqFormOptions) => {

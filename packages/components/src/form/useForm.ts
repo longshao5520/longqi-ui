@@ -1,4 +1,4 @@
-import {LqFormOptions, FormColumn} from "./types";
+import {FormColumn, LqFormOptions} from "./types";
 import {useProp} from "element-plus";
 import lodash from "lodash";
 import {Delete, Select} from '@element-plus/icons-vue'
@@ -13,11 +13,11 @@ const selectAttribute = publicAttribute.concat(['multiple', 'valueKey', 'collaps
 const dateAttribute = publicAttribute.concat(['type', 'editable', 'rangeSeparator', 'startPlaceholder', 'endPlaceholder', 'format', 'valueFormat', 'disabledDate', 'shortcuts'])
 const rateAttribute = publicAttribute.concat(['max', 'allowHalf', 'lowThreshold', 'highThreshold', 'colors', 'voidColor', 'disabledVoidColor', 'icons', 'voidIcon', 'disabledVoidIcon', 'showText', 'showScore', 'textColor', 'texts', 'scoreTemplate'])
 const switchAttribute = publicAttribute.concat(['loading', 'width', 'inlinePrompt', 'activeIcon', 'inactiveIcon', 'activeText', 'inactiveText', 'activeValue', 'inactiveValue', 'activeColor', 'inactiveColor', 'borderColor', 'name', 'beforeChange'])
-const numberAttribute = publicAttribute.concat(['min','max','step','stepStrictly', 'precision','controls','controlsPosition','valueOnClear'])
-const sliderAttribute = publicAttribute.concat(['min','max','step','showInput', 'showInputControls','inputSize','showStops','showTooltip', 'formatTooltip','range','vertical','height', 'rangeStartLabel','rangeEndLabel','formatValueText','debounce', 'tooltipClass', 'placement', 'marks'])
-const transferAttribute = publicAttribute.concat(['data','filterable','filterPlaceholder','filterMethod', 'targetOrder','titles','buttonTexts','renderContent', 'format','props','leftDefaultChecked','rightDefaultChecked'])
+const numberAttribute = publicAttribute.concat(['min', 'max', 'step', 'stepStrictly', 'precision', 'controls', 'controlsPosition', 'valueOnClear'])
+const sliderAttribute = publicAttribute.concat(['min', 'max', 'step', 'showInput', 'showInputControls', 'inputSize', 'showStops', 'showTooltip', 'formatTooltip', 'range', 'vertical', 'height', 'rangeStartLabel', 'rangeEndLabel', 'formatValueText', 'debounce', 'tooltipClass', 'placement', 'marks'])
+const transferAttribute = publicAttribute.concat(['data', 'filterable', 'filterPlaceholder', 'filterMethod', 'targetOrder', 'titles', 'buttonTexts', 'renderContent', 'format', 'props', 'leftDefaultChecked', 'rightDefaultChecked'])
 
-    export const useForm = () => {
+export const useForm = () => {
     let options = useProp<LqFormOptions>('option').value as LqFormOptions
 
     // 配置初始化
@@ -76,10 +76,18 @@ const transferAttribute = publicAttribute.concat(['data','filterable','filterPla
             result = lodash.pickBy(pattern, (value, key) => switchAttribute.includes(key))
         } else if (pattern.type == 'number') {
             result = lodash.pickBy(pattern, (value, key) => numberAttribute.includes(key))
+            if (lodash.isNil(result.placeholder)) {
+                result.placeholder = "请输入 " + pattern.label;
+            }
         } else if (pattern.type == 'slider') {
             result = lodash.pickBy(pattern, (value, key) => sliderAttribute.includes(key))
         } else if (pattern.type == 'transfer') {
             result = lodash.pickBy(pattern, (value, key) => transferAttribute.includes(key))
+        } else if (pattern.type == 'time' || pattern.type == 'timeSelect') {
+            result = lodash.pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
+            if (lodash.isNil(result.placeholder)) {
+                result.placeholder = "请选择 " + pattern.label;
+            }
         } else {
             result = lodash.pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
         }
