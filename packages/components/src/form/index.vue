@@ -51,7 +51,7 @@
                       <component
                           v-for="(subItem, subIndex) in item.dicData" :key="subIndex"
                           :is="getMultipleOptionsComponent(item)"
-                          v-bind="{...item,...subItem, label: item.type === 'radio' ? subItem.value : subItem.label}"
+                          v-bind="{...item,...subItem, label: item.type !== 'select' ? subItem.value : subItem.label}"
                       >
                         {{ subItem.label }}
                       </component>
