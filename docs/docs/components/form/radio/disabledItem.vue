@@ -22,7 +22,8 @@ export default defineComponent({
             value: 0
           }, {
             label: "女",
-            value: 1
+            value: 1,
+            disabled: true,
           }, {
             label: "未知",
             value: ""

@@ -17,6 +17,7 @@ export default defineComponent({
           label: "单选",
           prop: "radio",
           type: "radio",
+          button: true,
           dicData: [{
             label: "男",
             value: 0
