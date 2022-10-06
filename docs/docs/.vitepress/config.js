@@ -26,13 +26,13 @@ export default defineConfig({
   themeConfig: {
     logo: '/logo.png',
     siteTitle: "",
-    localeLinks: {
-      text: '',
-      items: [
-        { text: '简体中文', link: '/' },
-        { text: 'English', link: '/en/' },
-      ],
-    },
+    // localeLinks: {
+    //   text: '',
+    //   items: [
+    //     { text: '简体中文', link: '/' },
+    //     { text: 'English', link: '/en/' },
+    //   ],
+    // },
     nav: [
         { text: '指南', link: '/guide/' },
         {
