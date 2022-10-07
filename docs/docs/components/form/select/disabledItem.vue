@@ -20,6 +20,7 @@ export default defineComponent({
           dicData: [{
             label: "字典1",
             value: 0,
+            disabled: true,
           }, {
             label: "字典2",
             value: 1,

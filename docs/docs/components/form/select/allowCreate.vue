@@ -17,6 +17,9 @@ export default defineComponent({
           label: "下拉框",
           prop: "select",
           type: "select",
+          allowCreate: true,
+          filterable: true,
+          multiple: true,
           dicData: [{
             label: "字典1",
             value: 0,
@@ -24,7 +27,7 @@ export default defineComponent({
             label: "字典2",
             value: 1,
           }],
-        }
+        },
       ]
     });
 
