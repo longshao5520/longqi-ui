@@ -4,11 +4,11 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import {LqFormOptions} from "../form/types";
-import {PropType} from "vue";
+import {LqFormOptions} from "../types";
+import {computed, PropType} from "vue";
 import {useCrud} from "./useCrud";
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Object,
     required: true
@@ -35,7 +35,15 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange"])
-const {page} = useCrud()
+const {options, page} = useCrud()
+console.log(options)
+
+const headerRowStyle = computed(() => {
+  return {
+    "text-align": "center"
+  }
+})
+
 const currentChange = (value: number) => {
   emit("currentChange", value, value - 1)
 }
@@ -59,23 +67,58 @@ const rowDblclick = () => {
   <!-- search  -->
 
   <!-- content -->
+  <!--      :header-cell-style="headerRowStyle"-->
+  <!--      :cell-style="headerRowStyle"-->
   <el-table
+      style="width: 100%;"
       :data="data"
-      style="width: 100%"
       @select="select"
       @select-all="selectAll"
       @selection-change="selectionChange"
       @row-click="rowClick"
       @row-dblclick="rowDblclick"
   >
-    <template v-for="(item, index) in option.column" :key="index">
+    <template v-for="(item, index) in options.column" :key="index">
       <el-table-column
           :prop="item.prop"
           :label="item.label"
           :width="item.width"
+          :align="item.align"
+          :fixed="item.fixed"
       >
       </el-table-column>
     </template>
+    <el-table-column
+        :label="options.menuTitle"
+        :align="options.menuAlign"
+        :fixed="options.menuFixed"
+        :width="options.menuWidth">
+      <template #default="scope">
+        <el-button-group class="ml-4">
+          <el-button
+              v-if="options.viewBtn"
+              :type="options.viewBtnType"
+              :icon="options.viewBtnIcon"
+              text style="font-size: 14px;">
+            {{ options.viewBtnText }}
+          </el-button>
+          <el-button
+              v-if="options.editBtn"
+              :type="options.editBtnType"
+              :icon="options.editBtnIcon"
+              text style="font-size: 14px;">
+            {{ options.editBtnText }}
+          </el-button>
+          <el-button
+              v-if="options.delBtn"
+              :type="options.delBtnType"
+              :icon="options.delBtnIcon"
+              text style="font-size: 14px;">
+            {{ options.delBtnText }}
+          </el-button>
+        </el-button-group>
+      </template>
+    </el-table-column>
   </el-table>
   <!-- pagination -->
   <el-row justify="center" style="padding-top: 20px;">
