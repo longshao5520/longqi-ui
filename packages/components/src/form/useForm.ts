@@ -1,4 +1,4 @@
-import {FormColumn, LqFormOptions} from "./types";
+import {FormColumn, LqFormOptions} from "../types";
 import {useProp} from "element-plus";
 import lodash from "lodash";
 import {Delete, Select} from '@element-plus/icons-vue'
@@ -35,7 +35,7 @@ export const useForm = () => {
         emptyText: '清空',
         emptyIcon: markRaw(Delete),
     }
-    Object.assign(options, defaultOption)
+    lodash.defaults(options, defaultOption)
 
     options.column.map(item => {
         item.clearable = item.clearable || true;

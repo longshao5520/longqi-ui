@@ -1,8 +1,10 @@
-import {Component, reactive, VNode, VNodeProps} from "vue";
+import type {Component} from 'vue'
+import {reactive, VNode, VNodeProps} from "vue";
 import {UploadProps, UploadUserFile} from "element-plus";
 
 type Size = 'large' | 'default' | 'small'
 type Position = 'left' | 'right' | 'top'
+type Align = "left" | "center" | "right"
 type ColumnType =
     undefined
     | 'input'
@@ -43,6 +45,7 @@ interface FormColumnPublic extends FormLabel {
     label?: string
     value?: any
     type?: ColumnType
+    width?: string | number
     span?: number
     offset?: number
     size?: Size
@@ -152,7 +155,6 @@ interface Column extends ColumnEvent {
     // type text | textarea
     showWordLimit?: boolean
     // type text
-    formatter?: (value: string) => string
     parser?: (value: string) => string
     // type password
     showPassword?: boolean
@@ -261,11 +263,22 @@ interface Column extends ColumnEvent {
 }
 
 export interface FormColumn extends Column {
+    formatter?: (value: string) => string
+}
+
+export interface CrudColumn extends Column {
+    align: Align
+    headerAlign: Align
+    fixed: boolean
+    formatter?: (row: unknown, column: CrudColumn, cellValue: string | number | boolean, index: number) => string | number | boolean
+}
+
+interface Options {
+    size?: Size
 }
 
 export interface LqFormOptions extends FormLabel {
     column: Array<FormColumn>
-    size?: Size
     gutter?: number
     step?: number
     enter?: boolean
@@ -279,6 +292,41 @@ export interface LqFormOptions extends FormLabel {
     emptyIcon?: string | Component
 }
 
+export interface LqFormOptions extends Options {
+}
+
 export const defineLqForm = (options: LqFormOptions) => {
     return reactive(options)
+}
+
+type BtnType = "primary" | "success" | "warning" | "danger" | "info"
+
+interface LqCrudPermissions extends Options {
+    addBtn?: boolean
+    addBtnText?: string
+    addBtnType?: BtnType
+    addBtnIcon?: string | Component
+    editBtn?: boolean
+    editBtnText?: string
+    editBtnType?: BtnType
+    editBtnIcon?: string | Component
+    delBtn?: boolean
+    delBtnText?: string
+    delBtnType?: BtnType
+    delBtnIcon?: string | Component
+    viewBtn?: boolean
+    viewBtnText?: string
+    viewBtnType?: BtnType
+    viewBtnIcon?: string | Component
+
+    menu?: boolean
+    menuWidth?: number
+    menuTitle?: string
+    menuFixed?: boolean
+    menuType?: "button" | "icon" | "text" | "menu"
+    menuAlign?: Align
+}
+
+export interface LqCrudOptions extends LqCrudPermissions {
+    column: Array<CrudColumn>
 }

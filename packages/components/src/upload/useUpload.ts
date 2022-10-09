@@ -1,5 +1,5 @@
 import {useProp, UploadUserFile, UploadProps, UploadFiles} from "element-plus";
-import {FormColumn} from "../form/types";
+import {FormColumn} from "../types";
 import lodash from "lodash";
 
 export const useUpload = () => {

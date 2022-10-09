@@ -7,7 +7,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import lodash from "lodash";
 import {LqCrud, LqForm, LqUpload} from "./src";
-import {defineLqForm} from './src/form/types'
+import {defineLqForm} from './src/types'
 
 const components = [LqForm, LqUpload, LqCrud];
 

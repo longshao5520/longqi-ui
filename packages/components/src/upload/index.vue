@@ -44,7 +44,7 @@ export default {
 <script lang="ts" setup>
 import {PropType, computed, reactive, ref} from 'vue'
 import {UploadUserFile, UploadProps, UploadInstance} from "element-plus";
-import {FormColumn} from "../form/types";
+import {FormColumn} from "../types";
 import {useUpload} from "./useUpload";
 import {Plus, UploadFilled} from '@element-plus/icons-vue'
 

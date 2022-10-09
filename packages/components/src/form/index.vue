@@ -11,6 +11,7 @@
         <template v-for="(item, index) in options.column" :key="index">
           <el-col v-if="item.display" :span="item.span || 24">
             <el-form-item
+                :prop="item.prop"
                 :label="item.label + (item.labelSuffix || options.labelSuffix)"
                 :label-width="item.labelWidth"
                 :label-position="item.labelPosition"
@@ -88,7 +89,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import {PropType, ref} from "vue";
-import {LqFormOptions} from "./types";
+import {LqFormOptions} from "../types";
 import {useForm} from "./useForm";
 import {FormInstance} from "element-plus";
 
