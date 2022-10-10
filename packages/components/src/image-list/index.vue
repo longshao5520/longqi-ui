@@ -20,6 +20,32 @@ const props = defineProps({
     type: String,
     default: '100px',
   },
+  hideOnClickModal: {
+    type: Boolean,
+    default: true
+  },
+  fit: {
+    type: String as PropType<"fill" | "contain" | "cover" | "none" | "scale">,
+    values: ['', 'contain', 'cover', 'fill', 'none', 'scale-down'],
+    default: '',
+  },
+  loading: {
+    type: String,
+    values: ['eager', 'lazy'],
+  },
+  lazy: {
+    type: Boolean,
+    default: false,
+  },
+  scrollContainer: {
+    type: [String, HTMLElement] as PropType<string | HTMLElement>,
+  },
+  zIndex: {
+    type: Number,
+  },
+  alt: {
+    type: String,
+  },
 })
 
 const imageStyle = computed(() => ({
@@ -59,13 +85,19 @@ const closePreview = () => {
         ref="Image"
         class="image"
         :src="img"
+        :alt="alt"
+        :fit="fit"
+        :loading="loading"
+        :lazy="lazy"
+        :scroll-container="scrollContainer"
+        :z-index="zIndex"
     ></el-image>
   </span>
   <el-image-viewer
       v-if="isPreview"
       :url-list="list"
       :initial-index="previewIndex"
-      hide-on-click-modal
+      :hide-on-click-modal="hideOnClickModal"
       teleported
       @close="closePreview"/>
 </template>
