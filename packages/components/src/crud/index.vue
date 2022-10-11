@@ -5,9 +5,10 @@ export default {
 </script>
 <script lang="ts" setup>
 import {LqFormOptions} from "../types";
-import {computed, PropType} from "vue";
+import {computed, PropType, reactive} from "vue";
 import {useCrud} from "./useCrud";
 import {Search, Refresh, Printer} from "@element-plus/icons-vue"
+import {ElMessageBox} from "element-plus"
 
 defineProps({
   modelValue: {
@@ -35,10 +36,9 @@ defineProps({
     default: false
   },
 })
-const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange"])
-const {options, pageModel} = useCrud()
+const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel"])
+let {options, pageModel, form} = useCrud()
 
-const headRightIcon = [Printer, Refresh, Search]
 const headerRowStyle = computed(() => {
   return {
     "text-align": "center"
@@ -52,6 +52,28 @@ const sizeChange = (value: number) => {
   emit("sizeChange", value, value - 1)
 }
 
+const save = () => {
+}
+const edit = (row: any, index: number) => {
+  form = reactive(row)
+}
+const remove = (row: any, index: number) => {
+  ElMessageBox.confirm(
+      '此操作将永久删除, 是否继续?',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        emit("rowDel", row, index)
+      })
+}
+const view = () => {
+}
+
 const select = () => {
 }
 const selectAll = () => {
@@ -62,6 +84,16 @@ const rowClick = () => {
 }
 const rowDblclick = () => {
 }
+const headRightIcon = [{
+  icon: Printer, click: () => {
+  }
+}, {
+  icon: Refresh, click: () => {
+  }
+}, {
+  icon: Search, click: () => {
+  }
+}]
 </script>
 
 <template>
@@ -77,12 +109,13 @@ const rowDblclick = () => {
             v-if="options.addBtn"
             :type="options.addBtnType"
             :icon="options.addBtnIcon"
+            @click="save"
         >
           {{ options.addBtnText }}
         </el-button>
       </div>
       <div class="header-button-ri">
-        <el-button v-for="item in headRightIcon" :icon="item" circle></el-button>
+        <el-button v-for="item in headRightIcon" :icon="item.icon" circle @click="item.click"></el-button>
       </div>
     </div>
     <el-table
@@ -142,21 +175,27 @@ const rowDblclick = () => {
                 v-if="options.viewBtn"
                 :type="options.viewBtnType"
                 :icon="options.viewBtnIcon"
-                text style="font-size: 14px;">
+                text style="font-size: 14px;"
+                @click="view(item, scope.index)"
+            >
               {{ options.viewBtnText }}
             </el-button>
             <el-button
                 v-if="options.editBtn"
                 :type="options.editBtnType"
                 :icon="options.editBtnIcon"
-                text style="font-size: 14px;">
+                text style="font-size: 14px;"
+                @click="edit"
+            >
               {{ options.editBtnText }}
             </el-button>
             <el-button
                 v-if="options.delBtn"
                 :type="options.delBtnType"
                 :icon="options.delBtnIcon"
-                text style="font-size: 14px;">
+                text style="font-size: 14px;"
+                @click="remove"
+            >
               {{ options.delBtnText }}
             </el-button>
           </el-button-group>
