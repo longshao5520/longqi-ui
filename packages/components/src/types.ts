@@ -275,6 +275,7 @@ export interface CrudColumn extends Column {
 
 interface Options {
     size?: Size
+    title?: string
 }
 
 export interface LqFormOptions extends FormLabel {
@@ -325,8 +326,26 @@ interface LqCrudPermissions extends Options {
     menuFixed?: boolean
     menuType?: "button" | "icon" | "text" | "menu"
     menuAlign?: Align
+
+    index?: boolean
+    indexWidth?: number
+    indexFixed?: boolean
+    expand?: boolean
+    expandWidth?: number
+    expandFixed?: boolean
+    selection?: boolean
+    selectionWidth?: number
+    selectionFixed?: boolean
+    reserveSelection?: boolean
 }
 
 export interface LqCrudOptions extends LqCrudPermissions {
     column: Array<CrudColumn>
+    rowHeight?: string
+
+    stripe?: boolean
+    border?: boolean
+    card?: boolean
+
+    rowKey?: string | ((row: any) => string)
 }

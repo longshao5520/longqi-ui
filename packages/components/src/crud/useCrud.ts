@@ -1,8 +1,8 @@
 import {useProp} from "element-plus";
 import lodash from "lodash"
-import {LqCrudOptions} from "../types";
+import {CrudColumn, LqCrudOptions} from "../types";
 import {Component, markRaw} from 'vue'
-import {Plus, Edit, Delete, View} from '@element-plus/icons-vue'
+import {Delete, Edit, Plus, View} from '@element-plus/icons-vue'
 
 interface Page {
     currentPage: number,
@@ -20,6 +20,9 @@ export const useCrud = () => {
     // 配置初始化
     const defaultOption = {
         size: 'default',
+        rowHeight: "50px",
+        // card: true,
+
         addBtn: true,
         addBtnText: "新增",
         addBtnType: "primary",
@@ -39,12 +42,22 @@ export const useCrud = () => {
 
         menu: true,
         menuTitle: "操作",
-        menuAlign: "center"
+        menuAlign: "center",
+        menuWidth: 260,
+
+        indexWidth: 50,
+        expandWidth: 50,
+        selectionWidth: 50,
     } as LqCrudOptions
     lodash.defaults(options, defaultOption)
+    options.column.map(item => {
+        lodash.defaults(item, {
+            align: 'center'
+        } as CrudColumn)
+    })
 
-    let page = useProp<Page>('page').value as Page
-    lodash.defaults(page, {
+    let pageModel = useProp<Page>('page').value as Page
+    lodash.defaults(pageModel, {
         currentPage: 1,
         pageSize: 10,
         total: 0,
@@ -54,5 +67,5 @@ export const useCrud = () => {
         pageSizes: [10, 20, 30, 40, 50, 100]
     })
 
-    return {options, page}
+    return {options, pageModel}
 }
