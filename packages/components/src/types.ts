@@ -267,10 +267,11 @@ export interface FormColumn extends Column {
 }
 
 export interface CrudColumn extends Column {
-    align: Align
-    headerAlign: Align
-    fixed: boolean
+    align?: Align
+    headerAlign?: Align
+    fixed?: boolean
     formatter?: (row: unknown, column: CrudColumn, cellValue: string | number | boolean, index: number) => string | number | boolean
+    search?: boolean
 }
 
 interface Options {
@@ -279,7 +280,7 @@ interface Options {
 }
 
 export interface LqFormOptions extends FormLabel {
-    column: Array<FormColumn>
+    column: Array<CrudColumn>
     gutter?: number
     step?: number
     enter?: boolean
@@ -348,4 +349,8 @@ export interface LqCrudOptions extends LqCrudPermissions {
     card?: boolean
 
     rowKey?: string | ((row: any) => string)
+}
+
+export const defineLqCrud = (options: LqCrudOptions) => {
+    return reactive(options)
 }

@@ -1,7 +1,7 @@
 import {useProp} from "element-plus";
 import lodash from "lodash"
 import {CrudColumn, LqCrudOptions, LqFormOptions} from "../types";
-import {Component, markRaw} from 'vue'
+import {Component, markRaw, ref} from 'vue'
 import {Delete, Edit, Plus, View} from '@element-plus/icons-vue'
 
 interface Page {
@@ -69,5 +69,7 @@ export const useCrud = () => {
 
     let form = useProp<LqFormOptions>('modelValue').value as any
 
-    return {options, pageModel, form}
+    const searchShow = ref(true)
+
+    return {options, pageModel, form, searchShow}
 }

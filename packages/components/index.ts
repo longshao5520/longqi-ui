@@ -7,7 +7,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import lodash from "lodash";
 import {LqCrud, LqForm, LqImageList, LqUpload} from "./src";
-import {defineLqForm} from './src/types'
+import {defineLqForm,defineLqCrud} from './src/types'
 
 console.log(LqImageList)
 const components = [LqForm, LqUpload, LqCrud, LqImageList];
@@ -37,8 +37,8 @@ const install = (app: App, a: LocaleType) => {
 
 export {ElMessage, ElLoading, ElMessageBox, ElNotification};
 
-export {install, LqForm, defineLqForm, LqUpload, LqCrud, LqImageList};
+export {install, LqForm, defineLqForm, LqUpload, LqCrud, defineLqCrud, LqImageList};
 
-const LongQiUi = {install, LqForm, defineLqForm, LqUpload, LqCrud, LqImageList}
+const LongQiUi = {install, LqForm, defineLqForm, LqUpload, LqCrud, defineLqCrud, LqImageList}
 
 export default LongQiUi;

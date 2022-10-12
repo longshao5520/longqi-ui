@@ -5,12 +5,13 @@ export default {
 </script>
 <script lang="ts" setup>
 import {LqFormOptions} from "../types";
-import {computed, PropType, reactive} from "vue";
+import {PropType, reactive, ref, provide, watchEffect} from "vue";
 import {useCrud} from "./useCrud";
-import {Search, Refresh, Printer} from "@element-plus/icons-vue"
+import {Search, Refresh} from "@element-plus/icons-vue"
 import {ElMessageBox} from "element-plus"
+import HeaderSearch from "./header-search.vue";
 
-defineProps({
+const props = defineProps({
   modelValue: {
     type: Object,
     required: true
@@ -31,18 +32,18 @@ defineProps({
     type: Object,
     default: () => ({})
   },
-  loading: {
+  tableLoading: {
     type: Boolean,
     default: false
   },
 })
-const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel"])
+const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel", "refreshChange", "searchChange"])
 let {options, pageModel, form} = useCrud()
+provide("options", options)
 
-const headerRowStyle = computed(() => {
-  return {
-    "text-align": "center"
-  }
+const tableLoading = ref(false)
+watchEffect(() => {
+  tableLoading.value = props.tableLoading
 })
 
 const currentChange = (value: number) => {
@@ -54,8 +55,10 @@ const sizeChange = (value: number) => {
 
 const save = () => {
 }
+const activeRowIndex = ref()
 const edit = (row: any, index: number) => {
   form = reactive(row)
+  activeRowIndex.value = index
 }
 const remove = (row: any, index: number) => {
   ElMessageBox.confirm(
@@ -69,9 +72,11 @@ const remove = (row: any, index: number) => {
   )
       .then(() => {
         emit("rowDel", row, index)
-      })
+      }).catch(() => {
+  })
 }
-const view = () => {
+const view = (row: any, index: number) => {
+  console.log(row, index)
 }
 
 const select = () => {
@@ -84,21 +89,27 @@ const rowClick = () => {
 }
 const rowDblclick = () => {
 }
+// import Print from "../print/index.js"
+// const elTable = ref()
 const headRightIcon = [{
-  icon: Printer, click: () => {
-  }
-}, {
+//   icon: Printer, click: () => {
+//     // console.log(unref(elTable))
+//     Print(document.getElementById("tableContent"))
+//   }
+// }, {
   icon: Refresh, click: () => {
+    emit("refreshChange")
   }
 }, {
   icon: Search, click: () => {
+    emit("searchChange")
   }
 }]
 </script>
 
 <template>
   <!-- search  -->
-
+  <header-search v-model="search" :option="option" style="margin-bottom: 20px;"></header-search>
   <!-- content -->
   <!--      :header-cell-style="headerRowStyle"-->
   <!--      :cell-style="headerRowStyle"-->
@@ -119,6 +130,8 @@ const headRightIcon = [{
       </div>
     </div>
     <el-table
+        id="tableContent"
+        v-loading="tableLoading"
         ref="elTable"
         class="table-content"
         :cell-style="{height: options.rowHeight}"
@@ -168,15 +181,16 @@ const headRightIcon = [{
           :label="options.menuTitle"
           :align="options.menuAlign"
           :fixed="options.menuFixed"
-          :width="options.menuWidth">
-        <template #default="scope">
+          :width="options.menuWidth"
+      >
+        <template #default="{row, index}">
           <el-button-group class="ml-4">
             <el-button
                 v-if="options.viewBtn"
                 :type="options.viewBtnType"
                 :icon="options.viewBtnIcon"
                 text style="font-size: 14px;"
-                @click="view(item, scope.index)"
+                @click="view(row, index)"
             >
               {{ options.viewBtnText }}
             </el-button>
@@ -185,7 +199,7 @@ const headRightIcon = [{
                 :type="options.editBtnType"
                 :icon="options.editBtnIcon"
                 text style="font-size: 14px;"
-                @click="edit"
+                @click="edit(row, index)"
             >
               {{ options.editBtnText }}
             </el-button>
