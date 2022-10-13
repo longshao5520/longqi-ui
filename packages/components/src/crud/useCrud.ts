@@ -44,6 +44,7 @@ export const useCrud = () => {
         menuTitle: "操作",
         menuAlign: "center",
         menuWidth: 260,
+        refreshBtn: true,
 
         indexWidth: 50,
         expandWidth: 50,
@@ -69,7 +70,7 @@ export const useCrud = () => {
 
     let form = useProp<LqFormOptions>('modelValue').value as any
 
-    const searchShow = ref(true)
 
-    return {options, pageModel, form, searchShow}
+
+    return {options, pageModel, form}
 }

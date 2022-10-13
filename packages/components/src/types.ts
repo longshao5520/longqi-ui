@@ -338,6 +338,24 @@ interface LqCrudPermissions extends Options {
     selectionWidth?: number
     selectionFixed?: boolean
     reserveSelection?: boolean
+
+    searchBtn?: boolean
+    searchBtnText?: string
+    searchBtnIcon?: string | Component
+    emptyBtn?: boolean
+    emptyBtnText?: string
+    emptyBtnIcon?: string | Component
+    searchShow?: boolean
+
+    printBtn?: boolean
+    excelBtn?: boolean
+    refreshBtn?: boolean
+    searchShowBtn?: boolean
+    copyBtn?: boolean
+
+    addTitle?: string
+    editTitle?: string
+    viewTitle?: string
 }
 
 export interface LqCrudOptions extends LqCrudPermissions {

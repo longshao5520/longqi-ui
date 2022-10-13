@@ -4,7 +4,7 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import {computed, PropType} from "vue";
+import {computed, PropType, ref} from "vue";
 import {LqCrudOptions, LqFormOptions} from "../types";
 import LqForm from "../form/index.vue"
 import {useCrud} from "./useCrud";
@@ -20,8 +20,9 @@ const props = defineProps({
     required: true
   },
 })
+const emit = defineEmits(["submit"])
 // const options = inject("options") as LqCrudOptions
-const {searchShow, options} = useCrud()
+const {options} = useCrud()
 let formOption = computed(() => {
   const column = options.column.filter(item => item.search)
   column.map(item => {
@@ -46,6 +47,18 @@ const searchFlag = computed(() => {
   return searchLen.value !== 0
 })
 
+const submit = (form: any, hide: () => {}) => {
+  emit("submit", form, hide)
+}
+
+const searchShow = ref(true)
+const switchSearchShow = () => {
+  searchShow.value = !searchShow.value
+}
+
+defineExpose({
+  switchSearchShow
+})
 
 // formOption.column = options.column.filter(item => item.search)
 </script>
@@ -57,7 +70,7 @@ const searchFlag = computed(() => {
       :is="options.card ? 'el-card' : 'div'"
       :shadow="options.card ? 'always' : 'never'"
   >
-    <lq-form v-model="modelValue" :option="formOption"></lq-form>
+    <lq-form v-model="modelValue" :option="formOption" @submit="submit"></lq-form>
   </component>
 </template>
 

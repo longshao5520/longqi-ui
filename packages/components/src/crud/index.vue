@@ -38,7 +38,7 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel", "refreshChange", "searchChange"])
-let {options, pageModel, form} = useCrud()
+let {options, pageModel, form, switchSearchShow} = useCrud()
 provide("options", options)
 
 const tableLoading = ref(false)
@@ -91,25 +91,35 @@ const rowDblclick = () => {
 }
 // import Print from "../print/index.js"
 // const elTable = ref()
+const headerSearch = ref()
 const headRightIcon = [{
 //   icon: Printer, click: () => {
 //     // console.log(unref(elTable))
 //     Print(document.getElementById("tableContent"))
 //   }
 // }, {
-  icon: Refresh, click: () => {
+  icon: Refresh,
+  display: options.refreshBtn,
+  click: () => {
     emit("refreshChange")
   }
 }, {
-  icon: Search, click: () => {
-    emit("searchChange")
+  icon: Search,
+  display: options.searchShowBtn,
+  click: () => {
+    headerSearch.value?.switchSearchShow()
   }
 }]
+
+const searchChange = (form: any, hide: () => {}) => {
+  emit("searchChange", form, hide)
+}
 </script>
 
 <template>
   <!-- search  -->
-  <header-search v-model="search" :option="option" style="margin-bottom: 20px;"></header-search>
+  <header-search ref="headerSearch" v-model="search" :option="option" style="margin-bottom: 20px;"
+                 @submit="searchChange"></header-search>
   <!-- content -->
   <!--      :header-cell-style="headerRowStyle"-->
   <!--      :cell-style="headerRowStyle"-->
@@ -126,7 +136,9 @@ const headRightIcon = [{
         </el-button>
       </div>
       <div class="header-button-ri">
-        <el-button v-for="item in headRightIcon" :icon="item.icon" circle @click="item.click"></el-button>
+        <template v-for="(item, index) in headRightIcon" :key="index">
+          <el-button v-if="item.display" :icon="item.icon" circle @click="item.click"></el-button>
+        </template>
       </div>
     </div>
     <el-table
