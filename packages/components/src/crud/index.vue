@@ -38,7 +38,7 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel", "refreshChange", "searchChange"])
-let {options, pageModel, form, switchSearchShow} = useCrud()
+let {options, pageModel, form} = useCrud()
 provide("options", options)
 
 const tableLoading = ref(false)
