@@ -14,11 +14,11 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: '100px',
+    // default: '100px',
   },
   height: {
     type: String,
-    default: '100px',
+    // default: '100px',
   },
   hideOnClickModal: {
     type: Boolean,
@@ -49,8 +49,8 @@ const props = defineProps({
 })
 
 const imageStyle = computed(() => ({
-  width: props.width.includes("px") ? props.width : `${props.width}px`,
-  height: props.height.includes("px") ? props.height : `${props.height}px`,
+  width: props.width,
+  height: props.height,
 }))
 
 const list = computed(() => {
@@ -77,7 +77,7 @@ const closePreview = () => {
 <template>
   <span v-for="(img, index) in list" class="image-item" :style="imageStyle">
     <span class="warp" @click="showPreview(index)">
-      <el-icon size="1.5em">
+      <el-icon size="1.1em">
         <View />
       </el-icon>
     </span>
@@ -104,8 +104,6 @@ const closePreview = () => {
 
 <style lang="scss" scoped>
 .image-item {
-  // width: 100px;
-  // height: 100px;
   position: relative;
   display: inline-block;
   cursor: pointer;
