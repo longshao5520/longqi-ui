@@ -361,6 +361,7 @@ interface LqCrudPermissions extends Options {
 export interface LqCrudOptions extends LqCrudPermissions {
     column: Array<CrudColumn>
     rowHeight?: string
+    headerHeight?: string
 
     stripe?: boolean
     border?: boolean
