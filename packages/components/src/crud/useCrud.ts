@@ -1,7 +1,7 @@
 import {useProp} from "element-plus";
 import lodash from "lodash"
 import {CrudColumn, LqCrudOptions, LqFormOptions} from "../types";
-import {Component, markRaw, ref} from 'vue'
+import {Component, markRaw} from 'vue'
 import {Delete, Edit, Plus, View} from '@element-plus/icons-vue'
 
 interface Page {
@@ -20,7 +20,8 @@ export const useCrud = () => {
     // 配置初始化
     const defaultOption = {
         size: 'default',
-        rowHeight: "50px",
+        headerHeight: '50px',
+        rowHeight: "60px",
         // card: true,
 
         addBtn: true,

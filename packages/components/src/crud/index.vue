@@ -10,6 +10,7 @@ import {useCrud} from "./useCrud";
 import {Search, Refresh} from "@element-plus/icons-vue"
 import {ElMessageBox} from "element-plus"
 import HeaderSearch from "./header-search.vue";
+import {LqImageList} from "../index";
 
 const props = defineProps({
   modelValue: {
@@ -110,7 +111,8 @@ const headRightIcon = [{
     headerSearch.value?.switchSearchShow()
   }
 }]
-
+const UPLOAD_LIST = ['upload', 'uploadImg', 'uploadImgCard']
+const isUpload = (type: string) => UPLOAD_LIST.includes(type)
 const searchChange = (form: any, hide: () => {}) => {
   emit("searchChange", form, hide)
 }
@@ -147,7 +149,7 @@ const searchChange = (form: any, hide: () => {}) => {
         ref="elTable"
         class="table-content"
         :cell-style="{height: options.rowHeight}"
-        :header-cell-style="{height: options.rowHeight}"
+        :header-cell-style="{height: options.headerHeight}"
         :stripe="options.stripe"
         :border="options.border"
         :data="data"
@@ -187,6 +189,10 @@ const searchChange = (form: any, hide: () => {}) => {
             :align="item.align"
             :fixed="item.fixed"
         >
+          <template #default="{row, $index}">
+            <lq-image-list v-if="isUpload(item.type)" :src="row[item.prop]" :height="`calc(${options.rowHeight} - 16px)`"></lq-image-list>
+            <template v-else>{{row[item.prop]}}</template>
+          </template>
         </el-table-column>
       </template>
       <el-table-column
@@ -195,14 +201,14 @@ const searchChange = (form: any, hide: () => {}) => {
           :fixed="options.menuFixed"
           :width="options.menuWidth"
       >
-        <template #default="{row, index}">
+        <template #default="{row, $index}">
           <el-button-group class="ml-4">
             <el-button
                 v-if="options.viewBtn"
                 :type="options.viewBtnType"
                 :icon="options.viewBtnIcon"
                 text style="font-size: 14px;"
-                @click="view(row, index)"
+                @click="view(row, $index)"
             >
               {{ options.viewBtnText }}
             </el-button>
@@ -211,7 +217,7 @@ const searchChange = (form: any, hide: () => {}) => {
                 :type="options.editBtnType"
                 :icon="options.editBtnIcon"
                 text style="font-size: 14px;"
-                @click="edit(row, index)"
+                @click="edit(row, $index)"
             >
               {{ options.editBtnText }}
             </el-button>
@@ -220,7 +226,7 @@ const searchChange = (form: any, hide: () => {}) => {
                 :type="options.delBtnType"
                 :icon="options.delBtnIcon"
                 text style="font-size: 14px;"
-                @click="remove"
+                @click="remove(row, $index)"
             >
               {{ options.delBtnText }}
             </el-button>
