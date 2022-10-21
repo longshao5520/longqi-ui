@@ -189,9 +189,12 @@ const searchChange = (form: any, hide: () => {}) => {
             :align="item.align"
             :fixed="item.fixed"
         >
-          <template #default="{row, $index}">
-            <lq-image-list v-if="isUpload(item.type)" :src="row[item.prop]" :height="`calc(${options.rowHeight} - 16px)`"></lq-image-list>
-            <template v-else>{{row[item.prop]}}</template>
+          <template #default="{row, column, $index}">
+            <lq-image-list v-if="isUpload(item.type)" :src="row[item.prop]"
+                           :height="`calc(${options.rowHeight} - 16px)`"></lq-image-list>
+            <template v-else>
+              {{ typeof item.formatter === "function" ? item.formatter(row, column, row[item.prop], $index) : row[item.prop] }}
+            </template>
           </template>
         </el-table-column>
       </template>
