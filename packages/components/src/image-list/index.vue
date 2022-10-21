@@ -54,8 +54,12 @@ const imageStyle = computed(() => ({
 }))
 
 const list = computed(() => {
-  if (typeof props.src === 'string') {
-    return [props.src];
+  if (typeof props.src === "string") {
+    if (props.src.includes(",")) {
+      return props.src.split(",")
+    } else {
+      return [props.src];
+    }
   } else {
     return props.src;
   }
@@ -78,7 +82,7 @@ const closePreview = () => {
   <span v-for="(img, index) in list" class="image-item" :style="imageStyle">
     <span class="warp" @click="showPreview(index)">
       <el-icon size="1.1em">
-        <View />
+        <View/>
       </el-icon>
     </span>
     <el-image
