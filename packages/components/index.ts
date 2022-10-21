@@ -9,7 +9,7 @@ import lodash from "lodash";
 import {LqCrud, LqForm, LqImageList, LqUpload} from "./src";
 import {defineLqForm,defineLqCrud} from './src/types'
 
-console.log(LqImageList)
+// console.log(LqImageList)
 const components = [LqForm, LqUpload, LqCrud, LqImageList];
 
 interface LocaleType {
