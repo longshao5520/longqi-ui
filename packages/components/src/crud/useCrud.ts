@@ -53,6 +53,7 @@ export const useCrud = () => {
 
         addTitle: "新增",
         editTitle: "编辑",
+        viewTitle: "查看",
         dialogType: "dialog"
     } as LqCrudOptions
     lodash.defaults(options, defaultOption)

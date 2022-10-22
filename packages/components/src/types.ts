@@ -369,8 +369,6 @@ export interface LqCrudOptions extends LqCrudPermissions {
 
     rowKey?: string | ((row: any) => string)
 
-    addTitle?: string
-    editTitle?: string
     dialogType?: 'dialog' | 'drawer'
     dialogDirection?: 'rtl' | 'ltr' | 'ttb' | 'tbb'
     dialogWidth?: string

@@ -54,31 +54,7 @@ const sizeChange = (value: number) => {
   emit("sizeChange", value, value - 1)
 }
 
-const save = () => {
-}
-const activeRowIndex = ref()
-const edit = (row: any, index: number) => {
-  form = reactive(row)
-  activeRowIndex.value = index
-}
-const remove = (row: any, index: number) => {
-  ElMessageBox.confirm(
-      '此操作将永久删除, 是否继续?',
-      '提示',
-      {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-  )
-      .then(() => {
-        emit("rowDel", row, index)
-      }).catch(() => {
-  })
-}
-const view = (row: any, index: number) => {
-  console.log(row, index)
-}
+
 
 const select = () => {
 }
@@ -119,7 +95,38 @@ const searchChange = (form: any, hide: () => {}) => {
 
 const formType = ref("add")
 const dialogType = computed(() => `el-${options.dialogType}`)
-const dialogSwitch = ref(true)
+const dialogSwitch = ref(false)
+const save = () => {
+  formType.value = "add"
+  dialogSwitch.value = true
+}
+const activeRowIndex = ref()
+const edit = (row: any, index: number) => {
+  form = reactive(row)
+  activeRowIndex.value = index
+  formType.value = "edit"
+  dialogSwitch.value = true
+}
+const remove = (row: any, index: number) => {
+  ElMessageBox.confirm(
+      '此操作将永久删除, 是否继续?',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        emit("rowDel", row, index)
+      }).catch(() => {
+  })
+}
+const view = (row: any, index: number) => {
+  console.log(row, index)
+  formType.value = "view"
+  dialogSwitch.value = true
+}
 const dialogClose = () => {
   dialogSwitch.value = false
 }
