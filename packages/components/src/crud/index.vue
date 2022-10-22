@@ -5,9 +5,9 @@ export default {
 </script>
 <script lang="ts" setup>
 import {LqFormOptions} from "../types";
-import {PropType, reactive, ref, provide, watchEffect} from "vue";
+import {PropType, reactive, ref, provide, watchEffect, computed} from "vue";
 import {useCrud} from "./useCrud";
-import {Search, Refresh} from "@element-plus/icons-vue"
+import {Search, Refresh, Close} from "@element-plus/icons-vue"
 import {ElMessageBox} from "element-plus"
 import HeaderSearch from "./header-search.vue";
 import {LqImageList} from "../index";
@@ -115,6 +115,13 @@ const UPLOAD_LIST = ['upload', 'uploadImg', 'uploadImgCard']
 const isUpload = (type: string) => UPLOAD_LIST.includes(type)
 const searchChange = (form: any, hide: () => {}) => {
   emit("searchChange", form, hide)
+}
+
+const formType = ref("add")
+const dialogType = computed(() => `el-${options.dialogType}`)
+const dialogSwitch = ref(true)
+const dialogClose = () => {
+  dialogSwitch.value = false
 }
 </script>
 
@@ -255,6 +262,32 @@ const searchChange = (form: any, hide: () => {}) => {
       </div>
     </el-row>
   </component>
+  <component
+      :is="dialogType"
+      v-model="dialogSwitch"
+      :width="options.dialogWidth"
+      :top="options.dialogTop"
+      :fullscreen="options.dialogFullscreen"
+      :modal="options.dialogModal"
+      :close-on-press-escape="options.dialogEscape"
+      :draggable="options.dialogDrag"
+      :direction="options.dialogDirection"
+      :show-close="false"
+      :close-on-click-modal="false"
+      class="lq-crud-dialog"
+  >
+    <template #header>
+      <div class="lq-crud-dialog-header">
+        <div class="lq-crud-dialog-header-title">
+          {{options[`${formType}Title`]}}
+        </div>
+        <div class="lq-crud-dialog-header-btn">
+          <el-icon @click="dialogClose"><Close /></el-icon>
+<!--          <el-button text :icon="Close"></el-button>-->
+        </div>
+      </div>
+    </template>
+  </component>
 </template>
 
 <style lang="scss" scoped>
@@ -269,5 +302,24 @@ const searchChange = (form: any, hide: () => {}) => {
   //--el-table-header-bg-color: var(--el-fill-color-light);
   --el-table-header-bg-color: #f6f9f9;
   --el-table-header-text-color: #000000;
+}
+
+.lq-crud-dialog {
+  //--el-dialog-padding-primary: 0px !important;
+  //padding: var(--el-dialog-padding-primary);
+  &:deep(.el-dialog__header) {
+    padding: 0;
+    margin-right: 0;
+  }
+  .lq-crud-dialog-header {
+    display: flex;
+    justify-content: space-between;
+
+    .lq-crud-dialog-header-title {
+    }
+
+    .lq-crud-dialog-header-btn {
+    }
+  }
 }
 </style>

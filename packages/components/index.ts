@@ -29,7 +29,7 @@ const install = (app: App, a: LocaleType) => {
     }
     option = Object.assign(option, a)
     components.map((component: any) => {
-        console.log(component)
+        // console.log(component)
         app.component(component.name, component)
     });
     app.use(ElementPlus, option);

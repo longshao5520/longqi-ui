@@ -368,6 +368,18 @@ export interface LqCrudOptions extends LqCrudPermissions {
     card?: boolean
 
     rowKey?: string | ((row: any) => string)
+
+    addTitle?: string
+    editTitle?: string
+    dialogType?: 'dialog' | 'drawer'
+    dialogDirection?: 'rtl' | 'ltr' | 'ttb' | 'tbb'
+    dialogWidth?: string
+    dialogTop?: string
+    dialogModal?: boolean
+    dialogDrag?: boolean
+    dialogFullscreen?: boolean
+    dialogCloseBtn?: boolean
+    dialogEscape?: boolean
 }
 
 export const defineLqCrud = (options: LqCrudOptions) => {

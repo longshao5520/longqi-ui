@@ -50,6 +50,10 @@ export const useCrud = () => {
         indexWidth: 50,
         expandWidth: 50,
         selectionWidth: 50,
+
+        addTitle: "新增",
+        editTitle: "编辑",
+        dialogType: "dialog"
     } as LqCrudOptions
     lodash.defaults(options, defaultOption)
     options.column.map(item => {
