@@ -5,12 +5,12 @@ export default {
 </script>
 <script lang="ts" setup>
 import {LqFormOptions} from "../types";
-import {PropType, reactive, ref, provide, watchEffect, computed} from "vue";
+import {PropType, ref, provide, watchEffect, computed} from "vue";
 import {useCrud} from "./useCrud";
 import {Search, Refresh, Close, FullScreen} from "@element-plus/icons-vue"
 import {ElMessageBox} from "element-plus"
 import HeaderSearch from "./header-search.vue";
-import {LqImageList} from "../index";
+import {LqImageList, LqForm} from "../index";
 
 const props = defineProps({
   modelValue: {
@@ -39,7 +39,7 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(["update:page", "update:search", "currentChange", "sizeChange", "rowSave", "rowUpdate", "rowDel", "refreshChange", "searchChange"])
-let {options, pageModel, form} = useCrud()
+let {options, pageModel, form, formOption} = useCrud()
 provide("options", options)
 
 const tableLoading = ref(false)
@@ -102,7 +102,7 @@ const save = () => {
 }
 const activeRowIndex = ref()
 const edit = (row: any, index: number) => {
-  form = reactive(row)
+  form = row
   activeRowIndex.value = index
   formType.value = "edit"
   dialogSwitch.value = true
@@ -292,16 +292,23 @@ const dialogClose = () => {
           {{options[`${formType}Title`]}}
         </div>
         <div class="lq-crud-dialog-header-btn">
-          <el-icon style="margin-right: 20px;" @click="dialogFullscreen"><FullScreen /></el-icon>
-          <el-icon @click="dialogClose"><Close /></el-icon>
-<!--          <el-button text :icon="Close"></el-button>-->
+          <el-icon class="icon" @click="dialogFullscreen"><FullScreen /></el-icon>
+          <el-icon class="icon" @click="dialogClose"><Close /></el-icon>
         </div>
       </div>
     </template>
+    <lq-form v-if="dialogSwitch && ['add', 'edit'].includes(formType)" v-model="form" :option="formOption"></lq-form>
   </component>
 </template>
 
 <style lang="scss" scoped>
+.icon {
+  cursor: pointer;
+  & + .icon {
+    margin-left: 20px;
+  }
+}
+
 .table-header {
   display: flex;
   justify-content: space-between;

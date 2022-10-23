@@ -16,6 +16,7 @@ interface Page {
 
 export const useCrud = () => {
     let options = useProp<LqCrudOptions>('option').value as LqCrudOptions
+    const formOption = lodash.cloneDeep(options)
 
     // 配置初始化
     const defaultOption = {
@@ -77,6 +78,5 @@ export const useCrud = () => {
     let form = useProp<LqFormOptions>('modelValue').value as any
 
 
-
-    return {options, pageModel, form}
+    return {options, pageModel, form, formOption}
 }
