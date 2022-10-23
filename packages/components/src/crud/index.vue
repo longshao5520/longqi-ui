@@ -7,7 +7,7 @@ export default {
 import {LqFormOptions} from "../types";
 import {PropType, reactive, ref, provide, watchEffect, computed} from "vue";
 import {useCrud} from "./useCrud";
-import {Search, Refresh, Close} from "@element-plus/icons-vue"
+import {Search, Refresh, Close, FullScreen} from "@element-plus/icons-vue"
 import {ElMessageBox} from "element-plus"
 import HeaderSearch from "./header-search.vue";
 import {LqImageList} from "../index";
@@ -126,6 +126,9 @@ const view = (row: any, index: number) => {
   console.log(row, index)
   formType.value = "view"
   dialogSwitch.value = true
+}
+const dialogFullscreen = () => {
+  options.dialogFullscreen = !options.dialogFullscreen
 }
 const dialogClose = () => {
   dialogSwitch.value = false
@@ -289,6 +292,7 @@ const dialogClose = () => {
           {{options[`${formType}Title`]}}
         </div>
         <div class="lq-crud-dialog-header-btn">
+          <el-icon style="margin-right: 20px;" @click="dialogFullscreen"><FullScreen /></el-icon>
           <el-icon @click="dialogClose"><Close /></el-icon>
 <!--          <el-button text :icon="Close"></el-button>-->
         </div>
