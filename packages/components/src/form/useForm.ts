@@ -1,4 +1,4 @@
-import {FormColumn, LqFormOptions} from "../types";
+import {CrudColumn, FormColumn, LqFormOptions} from "../types";
 import {useProp} from "element-plus";
 import lodash from "lodash";
 import {Delete, Select} from '@element-plus/icons-vue'
@@ -126,7 +126,7 @@ export const useForm = () => {
 
     let modelValue = useProp<LqFormOptions>('modelValue').value as any
 
-    const formInitVal = (list: Array<FormColumn>) => {
+    const formInitVal = (list: Array<CrudColumn>) => {
         let value = {} as any;
         list.map(ele => {
             if (!lodash.isNil(ele.value)) {
@@ -138,7 +138,8 @@ export const useForm = () => {
         return value;
     }
 
-    let form = Object.assign(modelValue, lodash.cloneDeep(formInitVal(options.column)))
+    let form = lodash.defaults(modelValue, lodash.cloneDeep(formInitVal(options.column)))
+    console.log(form)
 
     return {options, form, isDate, isUpload, getComponent, getMultipleOptionsComponent, filterAttributes}
 }
