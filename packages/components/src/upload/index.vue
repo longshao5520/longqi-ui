@@ -8,7 +8,7 @@
         :on-success="onSuccess"
     >
       <template v-if="option.type === 'uploadImg'">
-        <img v-if="fileList" :src="fileList[0].url" class="avatar" alt=""/>
+        <img v-if="fileList && fileList.length > 0" :src="fileList[0]?.url" class="avatar" alt=""/>
         <el-icon v-else class="avatar-uploader-icon">
           <Plus/>
         </el-icon>
