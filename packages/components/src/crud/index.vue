@@ -256,7 +256,7 @@ const dialogClose = () => {
     </el-table>
     <!-- pagination -->
     <el-row justify="end" style="padding-top: 20px;">
-      <div>
+      <div style="user-select: none;">
         <el-pagination
             v-model:currentPage="pageModel.currentPage"
             v-model:page-size="pageModel.pageSize"
