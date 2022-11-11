@@ -10,7 +10,7 @@ const UPLOAD_LIST = ['upload', 'uploadImg', 'uploadImgCard']
 const publicAttribute = ['clearable', 'disabled', 'size', 'readonly', 'autofocus', 'validateEvent', 'rules']
 const inputAttribute = publicAttribute.concat(['type', 'maxlength', 'minlength', 'showWordLimit', 'showPassword', 'prefixIcon', 'suffixIcon', 'rows', 'autosize', 'resize'])
 const selectAttribute = publicAttribute.concat(['multiple', 'valueKey', 'collapseTags', 'collapseTagsTooltip', 'multipleLimit', 'effect', 'filterable', 'allowCreate', 'filterMethod', 'remote', 'remoteMethod', 'loading', 'loadingText', 'noMatchText', 'noDataText', 'popperClass', 'reserveKeyword', 'defaultFirstOption', 'persistent', 'automaticDropdown', 'clearIcon', 'fitInputWidth', 'suffixIcon', 'suffixTransition', 'tagType', 'placement'])
-const dateAttribute = publicAttribute.concat(['type', 'editable', 'rangeSeparator', 'startPlaceholder', 'endPlaceholder', 'format', 'valueFormat', 'disabledDate', 'shortcuts'])
+const dateAttribute = publicAttribute.concat(['type', 'editable', 'rangeSeparator', 'startPlaceholder', 'endPlaceholder', 'format', 'valueFormat', 'disabledDate', 'shortcuts', 'defaultTime', 'defaultValue'])
 const rateAttribute = publicAttribute.concat(['max', 'allowHalf', 'lowThreshold', 'highThreshold', 'colors', 'voidColor', 'disabledVoidColor', 'icons', 'voidIcon', 'disabledVoidIcon', 'showText', 'showScore', 'textColor', 'texts', 'scoreTemplate'])
 const switchAttribute = publicAttribute.concat(['loading', 'width', 'inlinePrompt', 'activeIcon', 'inactiveIcon', 'activeText', 'inactiveText', 'activeValue', 'inactiveValue', 'activeColor', 'inactiveColor', 'borderColor', 'name', 'beforeChange'])
 const numberAttribute = publicAttribute.concat(['min', 'max', 'step', 'stepStrictly', 'precision', 'controls', 'controlsPosition', 'valueOnClear'])
@@ -69,6 +69,10 @@ export const useForm = () => {
             result = lodash.pickBy(pattern, (value, key) => dateAttribute.includes(key))
             if (lodash.isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
+            }
+            if (pattern.type?.includes('range')) {
+                result.startPlaceholder = result.startPlaceholder || "开始"
+                result.endPlaceholder = result.endPlaceholder || "结束"
             }
         } else if (pattern.type == 'rate') {
             result = lodash.pickBy(pattern, (value, key) => rateAttribute.includes(key))
