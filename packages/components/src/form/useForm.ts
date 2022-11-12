@@ -92,6 +92,10 @@ export const useForm = () => {
             if (lodash.isNil(result.placeholder)) {
                 result.placeholder = "请选择 " + pattern.label;
             }
+            if (result.isRange) {
+                result.startPlaceholder = result.startPlaceholder || "开始"
+                result.endPlaceholder = result.endPlaceholder || "结束"
+            }
         } else {
             result = lodash.pickBy(pattern, (value, key) => !['display', 'label', 'prop', 'value'].includes(key))
         }
